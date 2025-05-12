@@ -1,0 +1,11 @@
+[package]
+name = "usrlib"
+version = "0.1.1"
+edition = "2021"
+authors = [
+    "Michael Schöttner <michael.schoettner@hhu.de>",
+    "Carsten Krollmann <cakro105@hhu.de>",
+]
+
+[dependencies]
+spin = "0.9.8"
