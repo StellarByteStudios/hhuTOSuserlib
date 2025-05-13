@@ -29,7 +29,7 @@ pub enum SystemCall {
     MMapHeapSpace,
     GraphicalPrint,
     GraphicalPrintWithPosition,
-    PaintPicture,
+    PaintPictureOnPos,
     PlaySong,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
