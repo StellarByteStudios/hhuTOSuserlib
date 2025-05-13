@@ -25,12 +25,8 @@ pub struct Writer {
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
 
-        usr_hello_world_print(522);
-
         usr_graphical_print_pos(self.cursor_x, self.cursor_y, s.as_ptr(), s.len() as u64);
-        usr_hello_world_print(523);
         self.update_pos(s.len() as u64);
-        usr_hello_world_print(524);
         return Ok(());
     }
 }
@@ -60,9 +56,6 @@ macro_rules! print_setpos {
 
 #[macro_export]
 macro_rules! println_setpos {
-    /*
-    ($x:expr, $y:expr, $fmt:expr) => (print_setpos!($x, $y, concat!($fmt, "\n")));
-    ($x:expr, $y:expr, $fmt:expr, $($arg:tt)*) => (print_setpos!($x, $y, concat!($fmt, "\n"), $($arg)*));*/
     // No additional arguments
     ($x:expr, $y:expr, $fmt:expr) => {
         $crate::graphix::print_setpos::printer_set_pos($x, $y);
@@ -78,15 +71,11 @@ macro_rules! println_setpos {
 
 // Helper function of print macros (must be public)
 pub fn print_with_pos(args: fmt::Arguments) {
-    usr_hello_world_print(52);
     // String ausgeben
-    // TODO: !! Bei diesem Aufruf gibt es einen Page-Fault
     WRITER.lock().write_fmt(args).unwrap();
-    usr_hello_world_print(53);
 }
 
 pub fn printer_set_pos(x: u64, y: u64) {
-    usr_hello_world_print(51);
     // Writer nimmt nicht mehrere Argumente, deswegen umständlich
     let mut writer = WRITER.lock();
 
