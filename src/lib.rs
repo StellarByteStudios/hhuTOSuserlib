@@ -9,5 +9,4 @@ pub mod utility;
 #[macro_use] // import macros, too
 pub mod graphix;
 
-fn main() {
-}
+fn main() {}

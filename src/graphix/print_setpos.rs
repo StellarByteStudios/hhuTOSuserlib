@@ -2,9 +2,7 @@ use core::{fmt, fmt::Write};
 
 use spin::Mutex;
 
-use crate::kernel::syscall::user_api::{
-    usr_get_screen_width, usr_graphical_print_pos, usr_hello_world_print,
-};
+use crate::kernel::syscall::user_api::{usr_get_screen_width, usr_graphical_print_pos};
 
 // The global writer that can used as an interface from other modules
 // It is threadsafe by using 'Mutex'
@@ -24,7 +22,6 @@ pub struct Writer {
 // Requires only one function 'write_str'
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-
         usr_graphical_print_pos(self.cursor_x, self.cursor_y, s.as_ptr(), s.len() as u64);
         self.update_pos(s.len() as u64);
         return Ok(());

@@ -14,90 +14,71 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
+use crate::kernel::syscall::SystemCall::{
+    DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
+    GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
+    HelloWorldWithPrint, MMapHeapSpace, PaintPicture, PlaySong,
+};
 use core::arch::asm;
 
 // Funktionsnummern aller Systemaufrufe
-// TODO: Syscallnummern als Enum speichern
-pub const SYSNO_HELLO_WORLD: usize = 0;
-pub const SYSNO_HELLO_WORLD_PRINT: usize = 1;
-pub const SYSNO_GET_LAST_KEY: usize = 2;
-pub const SYSNO_GET_THREAD_ID: usize = 3;
-pub const SYSNO_WRITE: usize = 4;
-pub const SYSNO_READ: usize = 5;
-pub const SYSNO_GET_SYSTIME: usize = 6;
-pub const SYSNO_GRAPHICAL_PRINT: usize = 7;
-pub const SYSNO_GRAPHICAL_PRINT_WITH_POS: usize = 8;
-pub const SYSNO_GET_SCREEN_WIDTH: usize = 9;
-pub const SYSNO_GET_PROCESS_ID: usize = 10;
-pub const SYSNO_GET_PROCESS_NAME: usize = 11;
-pub const SYSNO_DUMP_ACTIVE_VMAS: usize = 12;
-pub const SYSNO_MMAP_HEAP_SPACE: usize = 13;
-pub const SYSNO_PRINT_PICTURE: usize = 14;
-
-pub const SYSNO_PLAY_SONG: usize = 15;
-
 pub fn usr_hello_world() {
-    syscall0(SYSNO_HELLO_WORLD as u64);
+    syscall0(HelloWorld as u64);
 }
 
 pub fn usr_hello_world_print(arg1: u64) {
-    syscall1(SYSNO_HELLO_WORLD_PRINT as u64, arg1);
+    syscall1(HelloWorldWithPrint as u64, arg1);
 }
 
 pub fn usr_getlastkey() -> u64 {
-    return syscall0(SYSNO_GET_LAST_KEY as u64);
+    return syscall0(GetLastKey as u64);
 }
 
 pub fn usr_gettid() -> u64 {
-    return syscall0(SYSNO_GET_THREAD_ID as u64);
+    return syscall0(GetCurrentThreadID as u64);
 }
 
+/* Wird erstmal rausgeschmissen
 pub fn usr_write(buff: *const u8, len: u64) -> u64 {
     return syscall2(SYSNO_WRITE as u64, buff as u64, len);
 }
 
 pub fn usr_read(buff: *mut u8, len: u64) -> u64 {
     return syscall2(SYSNO_READ as u64, buff as u64, len);
-}
+}*/
 
 pub fn usr_get_systime() -> u64 {
-    return syscall0(SYSNO_GET_SYSTIME as u64);
+    return syscall0(GetSystime as u64);
 }
 
 pub fn usr_graphical_print(buff: *const u8, len: u64) {
-    syscall2(SYSNO_GRAPHICAL_PRINT as u64, buff as u64, len);
+    syscall2(GraphicalPrint as u64, buff as u64, len);
 }
 
 pub fn usr_graphical_print_pos(x: u64, y: u64, buff: *const u8, len: u64) {
-    syscall4(
-        SYSNO_GRAPHICAL_PRINT_WITH_POS as u64,
-        x,
-        y,
-        buff as u64,
-        len,
-    );
+    syscall4(GraphicalPrintWithPosition as u64, x, y, buff as u64, len);
 }
 
 pub fn usr_get_screen_width() -> u64 {
-    return syscall0(SYSNO_GET_SCREEN_WIDTH as u64);
+    return syscall0(GetScreenWidth as u64);
 }
 
 pub fn usr_get_pid() -> u64 {
-    return syscall0(SYSNO_GET_PROCESS_ID as u64);
+    return syscall0(GetCurrentProcessID as u64);
 }
 
 // Returned die Länge des gelesenen Namens
 pub fn usr_read_process_name(buff: *mut u8, len: u64) -> u64 {
-    return syscall2(SYSNO_GET_PROCESS_NAME as u64, buff as u64, len);
+    return syscall2(GetCurrentProcessName as u64, buff as u64, len);
 }
 
 pub fn usr_dump_active_vmas() {
-    syscall0(SYSNO_DUMP_ACTIVE_VMAS as u64);
+    syscall0(DumpVMAsOfCurrentProcess as u64);
 }
 
 // Gibt die Startadresse des Heaps zurück
 pub fn usr_mmap_heap_space(pid: usize, size: u64) -> u64 {
-    return syscall2(SYSNO_MMAP_HEAP_SPACE as u64, pid as u64, size);
+    return syscall2(MMapHeapSpace as u64, pid as u64, size);
 }
 
 pub fn usr_paint_picture_on_pos(
@@ -109,7 +90,7 @@ pub fn usr_paint_picture_on_pos(
     bitmapbuff: *const u8,
 ) {
     syscall6(
-        SYSNO_PRINT_PICTURE as u64,
+        PaintPicture as u64,
         x,
         y,
         width,
@@ -120,9 +101,8 @@ pub fn usr_paint_picture_on_pos(
 }
 
 pub fn usr_play_song(song_id: u64) {
-    syscall1(SYSNO_PLAY_SONG as u64, song_id);
+    syscall1(PlaySong as u64, song_id);
 }
-
 
 // TODO: Generischer syscall mit variablen Parametern
 #[inline(always)]
