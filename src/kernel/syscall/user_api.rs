@@ -17,7 +17,7 @@
 use crate::kernel::syscall::SystemCall::{
     DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
     GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
-    HelloWorldWithPrint, MMapHeapSpace, PaintPicture, PlaySong,
+    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong,
 };
 use core::arch::asm;
 
@@ -90,7 +90,7 @@ pub fn usr_paint_picture_on_pos(
     bitmapbuff: *const u8,
 ) {
     syscall6(
-        PaintPicture as u64,
+        PaintPictureOnPos as u64,
         x,
         y,
         width,
