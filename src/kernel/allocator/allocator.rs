@@ -30,7 +30,6 @@ pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 // defining the Allocator (which implements the 'GlobalAlloc' trait)
 #[cfg(feature = "global-alloc")] // Defaultfeature für Kernel deaktiviert -> allocator Dopplung
 #[global_allocator]
-//static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
 static ALLOCATOR: Locked<LinkedListAllocator> = Locked::new(LinkedListAllocator::new());
 
 /**
@@ -39,7 +38,7 @@ static ALLOCATOR: Locked<LinkedListAllocator> = Locked::new(LinkedListAllocator:
 #[cfg(feature = "global-alloc")] // Defaultfeature für Kernel deaktiviert -> allocator Dopplung
 pub fn init(pid: usize, heap_size: usize) {
     // Erst speicher anfordern
-    let heap_start: usize = usr_mmap_heap_space(pid, heap_size as u64) as usize;
+    let heap_start: usize = usr_mmap_heap_space(pid, heap_size) as usize;
 
     // Fehlerprüfung
     if heap_start == 0 {

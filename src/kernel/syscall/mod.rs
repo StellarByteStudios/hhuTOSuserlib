@@ -14,6 +14,7 @@ pub enum SongID {
 }
 
 // Enum with all known system calls
+// Inspired by D3OS
 #[repr(usize)]
 #[allow(dead_code)]
 pub enum SystemCall {

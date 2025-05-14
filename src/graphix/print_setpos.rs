@@ -13,8 +13,8 @@ pub static WRITER: Mutex<Writer> = Mutex::new(Writer {
 
 // Defining a Writer for writing formatted strings to the CGA screen
 pub struct Writer {
-    cursor_x: u64,
-    cursor_y: u64,
+    cursor_x: usize,
+    cursor_y: usize,
 }
 
 // Implementation of the 'core::fmt::Write' trait for our Writer
@@ -22,16 +22,16 @@ pub struct Writer {
 // Requires only one function 'write_str'
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-        usr_graphical_print_pos(self.cursor_x, self.cursor_y, s.as_ptr(), s.len() as u64);
-        self.update_pos(s.len() as u64);
+        usr_graphical_print_pos(self.cursor_x, self.cursor_y, s.as_ptr(), s.len());
+        self.update_pos(s.len());
         return Ok(());
     }
 }
 
 impl Writer {
-    pub fn update_pos(&mut self, len: u64) {
+    pub fn update_pos(&mut self, len: usize) {
         // Linewrap
-        let max_witdh: u64 = usr_get_screen_width() / 10;
+        let max_witdh: usize = usr_get_screen_width() as usize / 10;
 
         if self.cursor_x + len > max_witdh {
             self.cursor_y = self.cursor_y + 1;
@@ -72,7 +72,7 @@ pub fn print_with_pos(args: fmt::Arguments) {
     WRITER.lock().write_fmt(args).unwrap();
 }
 
-pub fn printer_set_pos(x: u64, y: u64) {
+pub fn printer_set_pos(x: usize, y: usize) {
     // Writer nimmt nicht mehrere Argumente, deswegen umständlich
     let mut writer = WRITER.lock();
 
