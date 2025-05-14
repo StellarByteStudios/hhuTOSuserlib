@@ -12,3 +12,28 @@ pub enum SongID {
     intro = 6,
     doom = 7,
 }
+
+// Enum with all known system calls
+// Inspired by D3OS
+#[repr(usize)]
+#[allow(dead_code)]
+pub enum SystemCall {
+    HelloWorld = 0,
+    HelloWorldWithPrint,
+    GetLastKey,
+    GetCurrentThreadID,
+    GetCurrentProcessID,
+    GetCurrentProcessName,
+    GetSystime,
+    GetScreenWidth,
+    DumpVMAsOfCurrentProcess,
+    MMapHeapSpace,
+    GraphicalPrint,
+    GraphicalPrintWithPosition,
+    PaintPictureOnPos,
+    PlaySong,
+
+    // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
+    LastEntryMarker,
+}
+pub const NUM_SYSCALLS: usize = SystemCall::LastEntryMarker as usize;

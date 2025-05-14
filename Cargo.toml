@@ -9,3 +9,8 @@ authors = [
 
 [dependencies]
 spin = "0.9.8"
+
+
+[features]
+default = ["global-alloc"] # Allocator standartmäßig gesetzt
+global-alloc = []

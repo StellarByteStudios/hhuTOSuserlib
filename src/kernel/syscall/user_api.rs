@@ -14,90 +14,175 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
+use crate::kernel::syscall::SystemCall::{self,
+    DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
+    GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
+    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong,
+};
 use core::arch::asm;
 
-// Funktionsnummern aller Systemaufrufe
-// TODO: Syscallnummern als Enum speichern
-pub const SYSNO_HELLO_WORLD: usize = 0;
-pub const SYSNO_HELLO_WORLD_PRINT: usize = 1;
-pub const SYSNO_GET_LAST_KEY: usize = 2;
-pub const SYSNO_GET_THREAD_ID: usize = 3;
-pub const SYSNO_WRITE: usize = 4;
-pub const SYSNO_READ: usize = 5;
-pub const SYSNO_GET_SYSTIME: usize = 6;
-pub const SYSNO_GRAPHICAL_PRINT: usize = 7;
-pub const SYSNO_GRAPHICAL_PRINT_WITH_POS: usize = 8;
-pub const SYSNO_GET_SCREEN_WIDTH: usize = 9;
-pub const SYSNO_GET_PROCESS_ID: usize = 10;
-pub const SYSNO_GET_PROCESS_NAME: usize = 11;
-pub const SYSNO_DUMP_ACTIVE_VMAS: usize = 12;
-pub const SYSNO_MMAP_HEAP_SPACE: usize = 13;
-pub const SYSNO_PRINT_PICTURE: usize = 14;
+// TODO: Generischer syscall mit variablen Parametern
+// Inspired by D3OS
+// Generischer Syscall. Kann für alle Argumentanzahlen verwendet werden, die unterstützt werden
+pub fn syscall(call: SystemCall, args: &[usize]) -> u64 {
+    let mut ret: u64;
 
-pub const SYSNO_PLAY_SONG: usize = 15;
+    // Abfrage ob nicht zu viele Argumente übergeben wurden
+    if args.len() > 6 {
+        panic!("System calls with more than 6 params are not supported.");
+    }
 
-pub fn usr_hello_world() {
-    syscall0(SYSNO_HELLO_WORLD as u64);
+    // Alle Argumente laden. Wenn nicht vorhanden einfach null-Referenz (sollte eh nicht benutz werden)
+    let arg0 = *args.first().unwrap_or(&0usize);
+    let arg1 = *args.get(1).unwrap_or(&0usize);
+    let arg2 = *args.get(2).unwrap_or(&0usize);
+    let arg3 = *args.get(3).unwrap_or(&0usize);
+    let arg4 = *args.get(4).unwrap_or(&0usize);
+    let arg5 = *args.get(5).unwrap_or(&0usize);
+
+    unsafe {
+        asm!(
+        "int 0x80",           // Software interrupt for syscalls on x86_64 Linux
+        in("rax") call as u64,// Load call into rax (the syscall number)
+        in("rdi") arg0,       // Load arg0 into rdi (first syscall parameter)
+        in("rsi") arg1,       // Load arg1 into rsi (second syscall parameter)
+        in("rdx") arg2,       // Load arg2 into rdc (third syscall parameter)
+        in("rcx") arg3,       // Load arg3 into rdc (forth syscall parameter)
+        in("r8")  arg4,
+        in("r9")  arg5,
+        lateout("rax") ret,   // Store return value from syscall in ret
+        options(preserves_flags, nostack)
+        );
+    }
+
+    return ret;
 }
 
-pub fn usr_hello_world_print(arg1: u64) {
-    syscall1(SYSNO_HELLO_WORLD_PRINT as u64, arg1);
+pub fn usr_hello_world() {
+    syscall(HelloWorld, &[]);
+}
+
+pub fn usr_hello_world_print(arg1: usize) {
+    syscall(HelloWorldWithPrint, &[arg1]);
 }
 
 pub fn usr_getlastkey() -> u64 {
-    return syscall0(SYSNO_GET_LAST_KEY as u64);
+    return syscall(GetLastKey, &[]);
 }
 
 pub fn usr_gettid() -> u64 {
-    return syscall0(SYSNO_GET_THREAD_ID as u64);
+    return syscall(GetCurrentThreadID, &[]);
 }
 
+pub fn usr_get_systime() -> u64 {
+    return syscall(GetSystime, &[]);
+}
+
+pub fn usr_graphical_print(buff: *const u8, len: usize) {
+    syscall(GraphicalPrint, &[buff as usize, len]);
+}
+
+pub fn usr_graphical_print_pos(x: usize, y: usize, buff: *const u8, len: usize) {
+    syscall(GraphicalPrintWithPosition, &[x, y, buff as usize, len]);
+}
+
+pub fn usr_get_screen_width() -> u64 {
+    return syscall(GetScreenWidth, &[]);
+}
+
+pub fn usr_get_pid() -> u64 {
+    return syscall(GetCurrentProcessID, &[]);
+}
+
+// Returned die Länge des gelesenen Namens
+pub fn usr_read_process_name(buff: *mut u8, len: usize) -> u64 {
+    return syscall(GetCurrentProcessName, &[buff as usize, len]);
+}
+
+pub fn usr_dump_active_vmas() {
+    syscall(DumpVMAsOfCurrentProcess, &[]);
+}
+
+// Gibt die Startadresse des Heaps zurück
+pub fn usr_mmap_heap_space(pid: usize, size: usize) -> u64 {
+    return syscall(MMapHeapSpace, &[pid, size]);
+}
+
+pub fn usr_paint_picture_on_pos(
+    x: usize,
+    y: usize,
+    width: usize,
+    height: usize,
+    bbp: usize,
+    bitmapbuff: *const u8,
+) {
+    syscall(
+        PaintPictureOnPos,
+        &[x, y, width, height, bbp, bitmapbuff as usize],
+    );
+}
+
+pub fn usr_play_song(song_id: usize) {
+    syscall(PlaySong, &[song_id]);
+}
+/*
+pub fn usr_hello_world() {
+    syscall0(HelloWorld as u64);
+}
+
+pub fn usr_hello_world_print(arg1: u64) {
+    syscall1(HelloWorldWithPrint as u64, arg1);
+}
+
+pub fn usr_getlastkey() -> u64 {
+    return syscall0(GetLastKey as u64);
+}
+
+pub fn usr_gettid() -> u64 {
+    return syscall0(GetCurrentThreadID as u64);
+}
+
+/* Wird erstmal rausgeschmissen
 pub fn usr_write(buff: *const u8, len: u64) -> u64 {
     return syscall2(SYSNO_WRITE as u64, buff as u64, len);
 }
 
 pub fn usr_read(buff: *mut u8, len: u64) -> u64 {
     return syscall2(SYSNO_READ as u64, buff as u64, len);
-}
+}*/
 
 pub fn usr_get_systime() -> u64 {
-    return syscall0(SYSNO_GET_SYSTIME as u64);
+    return syscall0(GetSystime as u64);
 }
 
 pub fn usr_graphical_print(buff: *const u8, len: u64) {
-    syscall2(SYSNO_GRAPHICAL_PRINT as u64, buff as u64, len);
+    syscall2(GraphicalPrint as u64, buff as u64, len);
 }
 
 pub fn usr_graphical_print_pos(x: u64, y: u64, buff: *const u8, len: u64) {
-    syscall4(
-        SYSNO_GRAPHICAL_PRINT_WITH_POS as u64,
-        x,
-        y,
-        buff as u64,
-        len,
-    );
+    syscall4(GraphicalPrintWithPosition as u64, x, y, buff as u64, len);
 }
 
 pub fn usr_get_screen_width() -> u64 {
-    return syscall0(SYSNO_GET_SCREEN_WIDTH as u64);
+    return syscall0(GetScreenWidth as u64);
 }
 
 pub fn usr_get_pid() -> u64 {
-    return syscall0(SYSNO_GET_PROCESS_ID as u64);
+    return syscall0(GetCurrentProcessID as u64);
 }
 
 // Returned die Länge des gelesenen Namens
 pub fn usr_read_process_name(buff: *mut u8, len: u64) -> u64 {
-    return syscall2(SYSNO_GET_PROCESS_NAME as u64, buff as u64, len);
+    return syscall2(GetCurrentProcessName as u64, buff as u64, len);
 }
 
 pub fn usr_dump_active_vmas() {
-    syscall0(SYSNO_DUMP_ACTIVE_VMAS as u64);
+    syscall0(DumpVMAsOfCurrentProcess as u64);
 }
 
 // Gibt die Startadresse des Heaps zurück
 pub fn usr_mmap_heap_space(pid: usize, size: u64) -> u64 {
-    return syscall2(SYSNO_MMAP_HEAP_SPACE as u64, pid as u64, size);
+    return syscall2(MMapHeapSpace as u64, pid as u64, size);
 }
 
 pub fn usr_paint_picture_on_pos(
@@ -109,7 +194,7 @@ pub fn usr_paint_picture_on_pos(
     bitmapbuff: *const u8,
 ) {
     syscall6(
-        SYSNO_PRINT_PICTURE as u64,
+        PaintPictureOnPos as u64,
         x,
         y,
         width,
@@ -120,11 +205,9 @@ pub fn usr_paint_picture_on_pos(
 }
 
 pub fn usr_play_song(song_id: u64) {
-    syscall1(SYSNO_PLAY_SONG as u64, song_id);
+    syscall1(PlaySong as u64, song_id);
 }
 
-
-// TODO: Generischer syscall mit variablen Parametern
 #[inline(always)]
 #[allow(unused_mut)]
 pub fn syscall0(arg0: u64) -> u64 {
@@ -264,3 +347,4 @@ pub fn syscall6(
     }
     ret
 }
+*/

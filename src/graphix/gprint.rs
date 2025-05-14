@@ -16,7 +16,7 @@ pub struct Writer {}
 // Requires only one function 'write_str'
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-        usr_graphical_print(s.as_ptr(), s.len() as u64);
+        usr_graphical_print(s.as_ptr(), s.len());
         return Ok(());
     }
 }

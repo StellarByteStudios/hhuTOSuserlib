@@ -61,14 +61,7 @@ pub fn animate_blink(x: u32, y: u32) {
     gprintln!("animating Blinking");
     loop {
         for i in 0..frames.len() {
-            draw_picture(
-                x,
-                y,
-                frames[i].width,
-                frames[i].height,
-                frames[i].data.as_slice(),
-                frames[i].bpp,
-            );
+            draw_picture(x as usize, y as usize, &frames[i]);
 
             delay(25);
         }
@@ -114,14 +107,7 @@ pub fn animate_charmander(x: u32, y: u32) {
     //gprintln!("animating Charmander");
     loop {
         for i in 0..frames.len() {
-            draw_picture(
-                x,
-                y,
-                frames[i].width,
-                frames[i].height,
-                frames[i].data.as_slice(),
-                frames[i].bpp,
-            );
+            draw_picture(x as usize, y as usize, &frames[i]);
 
             delay(10);
         }
@@ -197,14 +183,7 @@ pub fn animate_ghost(x: u32, y: u32) {
     gprintln!("animating Gillbert the Ghost");
     loop {
         for i in 0..frames.len() {
-            draw_picture(
-                x,
-                y,
-                frames[i].width,
-                frames[i].height,
-                frames[i].data.as_slice(),
-                frames[i].bpp,
-            );
+            draw_picture(x as usize, y as usize, &frames[i]);
 
             delay(5);
         }
