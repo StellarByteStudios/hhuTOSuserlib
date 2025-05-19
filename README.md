@@ -3,6 +3,11 @@ Eine Library, welche eine gemeinsame Syscall-Schnittstelle für mehrere hhuTOS B
 
 ---
 
+## Besprechung
+- Syscall für Thread.exit() um bei Panics den Thread zu Enden
+- Syscall für kprint mit nicht nur Zahlen
+
+
 ## Ideen für weitere Funktionen
 ### Privatisieren der Syscalls
 Es wäre vielleicht cleaner, wenn man die direkten Syscalls nicht mehr von den Anwendungen aus aufrufen kann. Eine Möglichkeit wäre, man stellt für alle Syscallfunktionen Wrapper in anderen packages zu verfügung. Diese können dann auch gewisse Vorverarbeitung und Nachbereitung machen, wie z.B. das umwandeln in einen String, wenn man nach dem Prozessnamen fragt.
@@ -13,3 +18,20 @@ Aktuell werden nur Musik-Stücke, welche der Kernel kennt über eine ID abgespie
 ### Shellfunktionen in den Usermode schieben
 Aktuell läuft die Shell selbst im Kernel. Besser wäre das im Usermode als Anwendung bräuchte dafür aber zuverlässige möglichkeit, die Tastatur einzulesen
 --> neuen Syscall: getKey
+
+
+
+## Dokumentation
+
+### App-Environment
+- Einige Konstanten sind vom Kernel in die Lib gewandert
+  - const USER_SPACE_START
+  - const USER_SPACE_CODE_START
+  - const USER_SPACE_ENV_START
+  - const USER_SPACE_ARG_START
+- Der Panic-Handler ist jetzt in der Userlib
+  - Benötigt noch zwei Syscalls:
+    - kill-Thread/Process
+    - kprint Syscall
+- Heap wird noch nicht initialisiert in Runtime (Später vielleicht) 
+ 
