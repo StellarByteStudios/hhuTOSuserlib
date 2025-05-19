@@ -6,6 +6,8 @@ Eine Library, welche eine gemeinsame Syscall-Schnittstelle für mehrere hhuTOS B
 ## Besprechung
 - Syscall für Thread.exit() um bei Panics den Thread zu Enden
 - Syscall für kprint mit nicht nur Zahlen
+- Man braucht eine "Dummy-Main" im Kernel, da die Userlib implementiert wird
+- Panic-Handler aus Apps entfernen
 
 
 ## Ideen für weitere Funktionen
