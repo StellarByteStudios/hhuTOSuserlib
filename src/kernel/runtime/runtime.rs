@@ -20,6 +20,7 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 // Entryfunktion die beim Starten der App angesprungen wird (Bereits Usermode)
+#[link_section = ".entry"]
 #[unsafe(no_mangle)]
 extern "C" fn entry() {
 
