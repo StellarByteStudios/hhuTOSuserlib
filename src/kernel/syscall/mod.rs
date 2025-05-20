@@ -32,6 +32,7 @@ pub enum SystemCall {
     GraphicalPrintWithPosition,
     PaintPictureOnPos,
     PlaySong,
+    DeleteLastScreenChars,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
