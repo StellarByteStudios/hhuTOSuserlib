@@ -8,6 +8,10 @@ Eine Library, welche eine gemeinsame Syscall-Schnittstelle für mehrere hhuTOS B
 - Syscall für kprint mit nicht nur Zahlen
 - Man braucht eine "Dummy-Main" im Kernel, da die Userlib implementiert wird
 - Panic-Handler aus Apps entfernen
+- Neues Erstellen von Apps
+  - Environment muss jetzt geladen werden
+    - Neues Mapping im Userspace
+    - Händisches Kopieren der Argumente in den Speicher
 
 
 ## Ideen für weitere Funktionen
@@ -36,4 +40,6 @@ Aktuell läuft die Shell selbst im Kernel. Besser wäre das im Usermode als Anwe
     - kill-Thread/Process
     - kprint Syscall
 - Heap wird noch nicht initialisiert in Runtime (Später vielleicht) 
+- VMA hat jetzt auch Environment Feld
+- Userlib gibt die Methoden `args()` und `args_as_vec()` um die Argumente als Iterator oder Vektor zu bekommen
  

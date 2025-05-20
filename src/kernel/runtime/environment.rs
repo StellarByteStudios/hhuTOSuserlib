@@ -1,4 +1,5 @@
 use alloc::string::{String, ToString};
+use alloc::vec::Vec;
 use core::ffi::CStr;
 use core::ptr::slice_from_raw_parts;
 
@@ -17,6 +18,7 @@ pub struct Args {
     index: usize
 }
 
+// Gibt die Argumente als Iterator zurück
 pub fn args() -> Args {
     Args::new()
 }
@@ -66,4 +68,14 @@ pub fn strlen(str: *const u8) -> usize {
     }
 
     return len;
+}
+
+// Gibt die Argumente als einen Vector zurück
+pub fn args_as_vec() -> Vec<String> {
+    let args = args();
+    let mut vec = Vec::new();
+    for arg in args {
+        vec.push(arg);
+    }
+    vec
 }
