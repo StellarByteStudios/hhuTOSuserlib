@@ -1,5 +1,6 @@
 use core::panic::PanicInfo;
-use crate::kernel::syscall::user_api::usr_hello_world_print;
+use crate::kernel::allocator::allocator::init;
+use crate::kernel::syscall::user_api::{usr_get_pid, usr_hello_world_print};
 use crate::kernel::runtime::environment;
 pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 
@@ -24,15 +25,10 @@ fn panic(info: &PanicInfo) -> ! {
 #[unsafe(no_mangle)]
 extern "C" fn entry() {
 
-    /* TODO: Heap Initialisierung in runtime verschieben
-    let heap_start: *mut u8;
-    let res = syscall(SystemCall::MapUserHeap, &[HEAP_SIZE]);
-    match res {
-        Ok(hs) => heap_start = hs as *mut u8,
-        Err(_) => panic!("Could not create user heap."),
-    }
-
-    allocator::init(pid, heap_size)*/
+    //TODO: Heap Initialisierung in runtime verschieben
+    // Allokator initialisieren
+    let pid: usize = usr_get_pid() as usize;
+    init(pid, HEAP_SIZE);
 
     // Hier wird die Mainfunktion aufgerufen (Mit Parametern)
     unsafe {
