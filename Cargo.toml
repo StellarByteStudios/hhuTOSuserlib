@@ -1,6 +1,6 @@
 [package]
 name = "usrlib"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 authors = [
     "Michael Schöttner <michael.schoettner@hhu.de>",
@@ -12,5 +12,6 @@ spin = "0.9.8"
 
 
 [features]
-default = ["global-alloc"] # Allocator standartmäßig gesetzt
+default = ["global-alloc", "lib-panic-handler"] # Allocator standartmäßig gesetzt
 global-alloc = []
+lib-panic-handler = []

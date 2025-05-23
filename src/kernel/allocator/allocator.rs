@@ -25,7 +25,6 @@ use crate::{
     kernel::{allocator::list::LinkedListAllocator, syscall::user_api::usr_mmap_heap_space},
 };
 
-pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 
 // defining the Allocator (which implements the 'GlobalAlloc' trait)
 #[cfg(feature = "global-alloc")] // Defaultfeature für Kernel deaktiviert -> allocator Dopplung
