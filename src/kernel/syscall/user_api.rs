@@ -17,7 +17,8 @@
 use crate::kernel::syscall::SystemCall::{self,
     DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
     GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
-    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong, DeleteLastScreenChars, 
+    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong, DeleteLastScreenChars, KernelPrint,
+    PanicPrint
 };
 use core::arch::asm;
 
@@ -128,6 +129,14 @@ pub fn usr_play_song(song_id: usize) {
 
 pub fn usr_delete_last_screen_chars(n: usize) {
     syscall(DeleteLastScreenChars, &[n]);
+}
+
+pub fn usr_kernel_print(buff: *const u8, len: usize) {
+    syscall(KernelPrint, &[buff, len]);
+}
+
+pub fn usr_panic_print(file_ptr: *const u8, file_len: usize, line: usize, msg_ptr: *const u8, msg_len: usize) {
+    syscall(PanicPrint, &[file_ptr, file_len, line, msg_ptr, msg_len]);
 }
 /*
 pub fn usr_hello_world() {

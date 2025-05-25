@@ -1,6 +1,7 @@
 use core::panic::PanicInfo;
+use core::fmt::Write;
 use crate::kernel::allocator::allocator::init;
-use crate::kernel::syscall::user_api::{usr_get_pid, usr_hello_world_print};
+use crate::kernel::syscall::user_api::{usr_get_pid, usr_hello_world_print, usr_panic_print};
 use crate::kernel::runtime::environment;
 pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 
@@ -11,11 +12,28 @@ unsafe extern "C" {
 #[cfg(feature = "lib-panic-handler")] // Defaultfeature für Kernel deaktiviert -> panic Handler Dopplung
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    // Hier bräuchte man noch einen noch einen guten Syscall
-    usr_hello_world_print(69);
+    // location der panic herausfiltern    
+    let (file_ptr, file_len, line) = if let Some(loc) = info.location() {
+        let file = loc.file().as_bytes();
+        (file.as_ptr(), file.len(), loc.line())
+    } else {
+        (core::ptr::null(), 0, 0)
+    };
+
+    // panic message herausfiltern
+    let (msg_ptr, msg_len) = if let Some(msg) = info.message() {
+        let mut buf = [0u8; 128];
+        let mut writer = ArrayWriter::new(&mut buf);
+        let _ = write!(&mut writer, "{}", msg);
+        (buf.as_ptr(), writer.len())
+    } else {
+        (core::ptr::null(), 0)
+    };
+
+    usr_panic_print(file_ptr, file_len, line as usize, msg_ptr, msg_len);
+
     loop { }
-    /* TODO:
-        - Syscall für kprint! -> Fehlermeldung
+    /* TODO:        
         - Statt loop einen Thread Exit
         */
 }

@@ -33,6 +33,8 @@ pub enum SystemCall {
     PaintPictureOnPos,
     PlaySong,
     DeleteLastScreenChars,
+    KernelPrint,
+    PanicPrint,    
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
