@@ -132,11 +132,11 @@ pub fn usr_delete_last_screen_chars(n: usize) {
 }
 
 pub fn usr_kernel_print(buff: *const u8, len: usize) {
-    syscall(KernelPrint, &[buff, len]);
+    syscall(KernelPrint, &[buff as usize, len]);
 }
 
 pub fn usr_panic_print(file_ptr: *const u8, file_len: usize, line: usize, msg_ptr: *const u8, msg_len: usize) {
-    syscall(PanicPrint, &[file_ptr, file_len, line, msg_ptr, msg_len]);
+    syscall(PanicPrint, &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len]);
 }
 /*
 pub fn usr_hello_world() {

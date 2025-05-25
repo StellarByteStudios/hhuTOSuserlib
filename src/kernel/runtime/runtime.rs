@@ -1,5 +1,4 @@
 use core::panic::PanicInfo;
-use core::fmt::Write;
 use crate::kernel::allocator::allocator::init;
 use crate::kernel::syscall::user_api::{usr_get_pid, usr_hello_world_print, usr_panic_print};
 use crate::kernel::runtime::environment;
@@ -20,15 +19,12 @@ fn panic(info: &PanicInfo) -> ! {
         (core::ptr::null(), 0, 0)
     };
 
-    // panic message herausfiltern
-    let (msg_ptr, msg_len) = if let Some(msg) = info.message() {
-        let mut buf = [0u8; 128];
-        let mut writer = ArrayWriter::new(&mut buf);
-        let _ = write!(&mut writer, "{}", msg);
-        (buf.as_ptr(), writer.len())
+    // panic message herausfiltern    
+    let (msg_ptr, msg_len) = if let Some(msg) = info.message().as_str() {
+        (msg.as_ptr(), msg.len())
     } else {
         (core::ptr::null(), 0)
-    };
+    };    
 
     usr_panic_print(file_ptr, file_len, line as usize, msg_ptr, msg_len);
 
