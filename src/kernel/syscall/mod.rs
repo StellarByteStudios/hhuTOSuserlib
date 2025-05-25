@@ -1,4 +1,5 @@
 pub mod user_api;
+pub mod wrapper;
 
 // TODO: Das vielleicht anders lösen, indem direkt ein Format an den Kernel übergeben wird
 #[derive(Copy, Clone)]
