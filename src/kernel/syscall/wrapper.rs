@@ -10,8 +10,8 @@ pub fn get_process_name() -> String {
     let string = String::new();
     for i in 0..name_len {
         unsafe {
-            let byte = *app_name_buff.add(i);
-            string.push(byte);
+            let byte = *app_name_buff.add(i as usize);
+            string.push(byte as char);
         }
     }
     
