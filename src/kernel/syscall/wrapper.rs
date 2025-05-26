@@ -7,12 +7,10 @@ pub fn get_process_name() -> String {
     let ptr = app_name_buff.as_mut_ptr();
     let name_len = usr_read_process_name(ptr, 64);
 
-    let string = String::new();
-    for i in 0..name_len {
-        unsafe {
-            let byte = *app_name_buff.add(i as usize);
-            string.push(byte as char);
-        }
+    let mut string = String::new();
+    for i in 0..name_len as usize {        
+        let byte = app_name_buff[i];
+        string.push(byte as char);
     }
     
     string
