@@ -25,8 +25,6 @@ fn panic(info: &PanicInfo) -> ! {
 #[unsafe(no_mangle)]
 extern "C" fn entry() {
 
-    //TODO: Heap Initialisierung in runtime verschieben
-    // Allokator initialisieren
     let pid: usize = usr_get_pid() as usize;
     init(pid, HEAP_SIZE);
 
