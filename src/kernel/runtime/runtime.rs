@@ -1,6 +1,6 @@
 use core::panic::PanicInfo;
 use crate::kernel::allocator::allocator::init;
-use crate::kernel::syscall::user_api::{usr_get_pid, usr_hello_world_print, usr_panic_print};
+use crate::kernel::syscall::user_api::{usr_get_pid, usr_hello_world_print, usr_panic_print, usr_thread_exit, usr_process_exit};
 use crate::kernel::runtime::environment;
 pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 
@@ -28,10 +28,8 @@ fn panic(info: &PanicInfo) -> ! {
 
     usr_panic_print(file_ptr, file_len, line as usize, msg_ptr, msg_len);
 
-    loop { }
-    /* TODO:        
-        - Statt loop einen Thread Exit
-        */
+    usr_thread_exit();
+    loop { }    
 }
 
 // Entryfunktion die beim Starten der App angesprungen wird (Bereits Usermode)
@@ -50,5 +48,5 @@ extern "C" fn entry() {
     }
 
     // TODO: Beim return der Main den Prozess beenden (Syscall)
-    //process::exit();
+    usr_process_exit();
 }

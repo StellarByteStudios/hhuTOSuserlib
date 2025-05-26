@@ -18,7 +18,7 @@ use crate::kernel::syscall::SystemCall::{self,
     DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
     GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
     HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong, DeleteLastScreenChars, KernelPrint,
-    PanicPrint, ListAppNames, GetAppMatchingName, StartAppWithName,
+    PanicPrint, ListAppNames, GetAppMatchingName, StartAppWithName, ExitThread, ExitProcess,
 };
 use core::arch::asm;
 
@@ -151,6 +151,14 @@ pub fn usr_get_app_matching_name(name: *const u8, name_len: usize, buff: *mut u8
 // returned ob die app mit diesem Namen gefunden wurde
 pub fn usr_start_app_with_name(name: *const u8, len: usize) -> u64 {
     syscall(StartAppWithName, &[name as usize, len])
+}
+
+pub fn usr_thread_exit() {
+    syscall(ExitThread, &[]);
+}
+
+pub fn usr_process_exit() {
+    syscall(ExitProcess, &[]);
 }
 /*
 pub fn usr_hello_world() {

@@ -39,6 +39,8 @@ pub enum SystemCall {
     ListAppNames,
     GetAppMatchingName,
     StartAppWithName,
+    ExitThread,
+    ExitProcess,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
