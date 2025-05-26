@@ -35,7 +35,10 @@ pub enum SystemCall {
     PlaySong,
     DeleteLastScreenChars,
     KernelPrint,
-    PanicPrint,    
+    PanicPrint,
+    ListAppNames,
+    GetAppMatchingName,
+    StartAppWithName,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,

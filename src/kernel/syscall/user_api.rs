@@ -18,7 +18,7 @@ use crate::kernel::syscall::SystemCall::{self,
     DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
     GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
     HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong, DeleteLastScreenChars, KernelPrint,
-    PanicPrint
+    PanicPrint, ListAppNames, GetAppMatchingName, StartAppWithName,
 };
 use core::arch::asm;
 
@@ -137,6 +137,20 @@ pub fn usr_kernel_print(buff: *const u8, len: usize) {
 
 pub fn usr_panic_print(file_ptr: *const u8, file_len: usize, line: usize, msg_ptr: *const u8, msg_len: usize) {
     syscall(PanicPrint, &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len]);
+}
+
+pub fn usr_list_app_names() {
+    syscall(ListAppNames, &[]);
+}
+
+// returned die Länge des names
+pub fn usr_get_app_matching_name(name: *const u8, name_len: usize, buff: *mut u8, len: usize) -> u64 {
+    syscall(GetAppMatchingName, &[name as usize, name_len, buff as usize, len])
+}
+
+// returned ob die app mit diesem Namen gefunden wurde
+pub fn usr_start_app_with_name(name: *const u8, len: usize) -> u64 {
+    syscall(StartAppWithName, &[name as usize, len])
 }
 /*
 pub fn usr_hello_world() {
