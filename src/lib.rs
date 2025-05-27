@@ -10,3 +10,7 @@ pub mod utility;
 pub mod graphix;
 
 fn main() {}
+
+// Kompiler Errors
+#[cfg(all(not(feature = "global-alloc"), feature = "runtime"))]
+compile_error!("Feature `runtime` requires `global-alloc` to be enabled.");
