@@ -13,13 +13,13 @@ unsafe extern "C" {
 fn panic(info: &PanicInfo) -> ! {
     // location der panic herausfiltern    
     let (file_ptr, file_len, line) = if let Some(loc) = info.location() {
-        let file = loc.file().as_bytes();
+        let file = loc.file();
         (file.as_ptr(), file.len(), loc.line())
     } else {
         (core::ptr::null(), 0, 0)
     };
 
-    // panic message herausfiltern    
+    // panic message herausfiltern
     let (msg_ptr, msg_len) = if let Some(msg) = info.message().as_str() {
         (msg.as_ptr(), msg.len())
     } else {
