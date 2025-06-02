@@ -18,7 +18,7 @@ use crate::kernel::syscall::SystemCall::{self,
     DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
     GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
     HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong, DeleteLastScreenChars, KernelPrint,
-    PanicPrint, ListAppNames, GetAppMatchingName, StartAppWithName, ExitThread, ExitProcess,
+    PanicPrint, ListAppNames, GetAppMatchingName, StartAppWithName, ExitThread, ExitProcess, KillProcess,
 };
 use core::arch::asm;
 
@@ -159,6 +159,10 @@ pub fn usr_thread_exit() {
 
 pub fn usr_process_exit() {
     syscall(ExitProcess, &[]);
+}
+
+pub fn usr_kill_process(pid: usize) {
+    syscall(KillProcess, &[pid]);
 }
 /*
 pub fn usr_hello_world() {
