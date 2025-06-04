@@ -52,6 +52,15 @@ Ziel dieser Kopplung ist es "platformunabhängige" Apps zu schreiben welche nur 
 
 
 ## Vortrag
+### Struktur
+- Erst 10 min Vortrag über Shell (Geschichte), moderne Shell, Posix schnittstelle (Moriz)
+- 10 min über die Userlib (Carsten)
+  - Was kann sie
+  - Wie sieht die Schnittstelle aus
+  - Was machen die OS unterschiedlihc
+- 5 min Über eigenes OS (Carsten)
+- 5 min Über eigenes OS (Moriz)
+
 Einige mögliche Teil-Themen für den Vortrag:
 - Geschichte der Shell
     - was war die erste
