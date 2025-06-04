@@ -1,6 +1,6 @@
 use core::panic::PanicInfo;
 use crate::kernel::allocator::allocator::init;
-use crate::kernel::syscall::user_api::{usr_get_pid, usr_hello_world_print};
+use crate::kernel::syscall::user_api::{usr_get_pid, usr_panic_print, usr_thread_exit, usr_process_exit};
 use crate::kernel::runtime::environment;
 pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 
@@ -11,13 +11,25 @@ unsafe extern "C" {
 #[cfg(feature = "lib-panic-handler")] // Defaultfeature für Kernel deaktiviert -> panic Handler Dopplung
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    // Hier bräuchte man noch einen noch einen guten Syscall
-    usr_hello_world_print(69);
-    loop { }
-    /* TODO:
-        - Syscall für kprint! -> Fehlermeldung
-        - Statt loop einen Thread Exit
-        */
+    // location der panic herausfiltern    
+    let (file_ptr, file_len, line) = if let Some(loc) = info.location() {
+        let file = loc.file();
+        (file.as_ptr(), file.len(), loc.line())
+    } else {
+        (core::ptr::null(), 0, 0)
+    };
+
+    // panic message herausfiltern
+    let (msg_ptr, msg_len) = if let Some(msg) = info.message().as_str() {
+        (msg.as_ptr(), msg.len())
+    } else {
+        (core::ptr::null(), 0)
+    };    
+
+    usr_panic_print(file_ptr, file_len, line as usize, msg_ptr, msg_len);
+
+    usr_thread_exit();
+    loop { }    
 }
 
 // Entryfunktion die beim Starten der App angesprungen wird (Bereits Usermode)
@@ -34,5 +46,5 @@ extern "C" fn entry() {
     }
 
     // TODO: Beim return der Main den Prozess beenden (Syscall)
-    //process::exit();
+    usr_process_exit();
 }

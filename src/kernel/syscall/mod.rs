@@ -1,4 +1,5 @@
 pub mod user_api;
+pub mod wrapper;
 
 // TODO: Das vielleicht anders lösen, indem direkt ein Format an den Kernel übergeben wird
 #[derive(Copy, Clone)]
@@ -32,6 +33,15 @@ pub enum SystemCall {
     GraphicalPrintWithPosition,
     PaintPictureOnPos,
     PlaySong,
+    DeleteLastScreenChars,
+    KernelPrint,
+    PanicPrint,
+    ListAppNames,
+    GetAppMatchingName,
+    StartAppWithName,
+    ExitThread,
+    ExitProcess,
+    KillProcess,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
