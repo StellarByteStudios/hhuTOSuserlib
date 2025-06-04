@@ -17,7 +17,8 @@
 use crate::kernel::syscall::SystemCall::{self,
     DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
     GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
-    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong,
+    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong, DeleteLastScreenChars, KernelPrint,
+    PanicPrint, ListAppNames, GetAppMatchingName, StartAppWithName, ExitThread, ExitProcess, KillProcess,
 };
 use core::arch::asm;
 
@@ -124,6 +125,44 @@ pub fn usr_paint_picture_on_pos(
 
 pub fn usr_play_song(song_id: usize) {
     syscall(PlaySong, &[song_id]);
+}
+
+pub fn usr_delete_last_screen_chars(n: usize) {
+    syscall(DeleteLastScreenChars, &[n]);
+}
+
+pub fn usr_kernel_print(buff: *const u8, len: usize) {
+    syscall(KernelPrint, &[buff as usize, len]);
+}
+
+pub fn usr_panic_print(file_ptr: *const u8, file_len: usize, line: usize, msg_ptr: *const u8, msg_len: usize) {
+    syscall(PanicPrint, &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len]);
+}
+
+pub fn usr_list_app_names() {
+    syscall(ListAppNames, &[]);
+}
+
+// returned die Länge des names
+pub fn usr_get_app_matching_name(name: *const u8, name_len: usize, buff: *mut u8, len: usize) -> u64 {
+    syscall(GetAppMatchingName, &[name as usize, name_len, buff as usize, len])
+}
+
+// returned ob die app mit diesem Namen gefunden wurde
+pub fn usr_start_app_with_name(name: *const u8, len: usize) -> u64 {
+    syscall(StartAppWithName, &[name as usize, len])
+}
+
+pub fn usr_thread_exit() {
+    syscall(ExitThread, &[]);
+}
+
+pub fn usr_process_exit() {
+    syscall(ExitProcess, &[]);
+}
+
+pub fn usr_kill_process(pid: usize) {
+    syscall(KillProcess, &[pid]);
 }
 /*
 pub fn usr_hello_world() {
