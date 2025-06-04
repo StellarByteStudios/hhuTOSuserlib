@@ -13,6 +13,7 @@ hashbrown = { version = "0.14"} # , default-features = false, features = ["rustc
 
 
 [features]
-default = ["global-alloc", "lib-panic-handler"] # Allocator standartmäßig gesetzt
+default = ["global-alloc", "lib-panic-handler", "runtime"] # Defaultfeatures standartmäßig gesetzt
 global-alloc = []
 lib-panic-handler = []
+runtime = ["global-alloc"] # Runtime braucht den allocator zum funktionieren
