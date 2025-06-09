@@ -78,7 +78,7 @@ pub fn map_string_to_env_var(var: String) -> String {
         return var;
     }
 
-    kprintln!("Environment Variable von {} ersetzt zu: ", var);
+    //kprintln!("Environment Variable von {} ersetzt zu: ", var);
     // Variablenname rausschneiden
     let new_var = var.replace('$', "");
 
@@ -87,11 +87,11 @@ pub fn map_string_to_env_var(var: String) -> String {
 
     // War die Suche Erfolgslos
     if env_var.is_none() {
-        kprintln!("ERROR");
+        //kprintln!("ERROR");
         return var;
     }
 
-    kprint!("{}", env_var.clone().unwrap());
+    //kprint!("{}", env_var.clone().unwrap());
 
     // Variablenkontent auspacken und zurückgeben
     return env_var.unwrap();
