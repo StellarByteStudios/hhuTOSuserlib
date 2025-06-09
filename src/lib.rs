@@ -3,6 +3,8 @@
 #![allow(unused_variables)] // avoid warnings
 
 extern crate alloc;
+
+#[macro_use]
 pub mod kernel;
 pub mod utility;
 

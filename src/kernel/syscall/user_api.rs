@@ -14,11 +14,12 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
-use crate::kernel::syscall::SystemCall::{self,
-    DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
-    GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
-    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySong, DeleteLastScreenChars, KernelPrint,
-    PanicPrint, ListAppNames, GetAppMatchingName, StartAppWithName, ExitThread, ExitProcess, KillProcess,
+use crate::kernel::syscall::SystemCall::{
+    self, DeleteLastScreenChars, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread,
+    GetAppMatchingName, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID, GetLastKey,
+    GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
+    HelloWorldWithPrint, KernelPrint, KillProcess, ListAppNames, MMapHeapSpace, PaintPictureOnPos,
+    PanicPrint, PlaySong, StartAppWithName,
 };
 use core::arch::asm;
 
@@ -134,8 +135,17 @@ pub fn usr_kernel_print(buff: *const u8, len: usize) {
     syscall(KernelPrint, &[buff as usize, len]);
 }
 
-pub fn usr_panic_print(file_ptr: *const u8, file_len: usize, line: usize, msg_ptr: *const u8, msg_len: usize) {
-    syscall(PanicPrint, &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len]);
+pub fn usr_panic_print(
+    file_ptr: *const u8,
+    file_len: usize,
+    line: usize,
+    msg_ptr: *const u8,
+    msg_len: usize,
+) {
+    syscall(
+        PanicPrint,
+        &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len],
+    );
 }
 
 pub fn usr_list_app_names() {
@@ -143,8 +153,16 @@ pub fn usr_list_app_names() {
 }
 
 // returned die Länge des names
-pub fn usr_get_app_matching_name(name: *const u8, name_len: usize, buff: *mut u8, len: usize) -> u64 {
-    syscall(GetAppMatchingName, &[name as usize, name_len, buff as usize, len])
+pub fn usr_get_app_matching_name(
+    name: *const u8,
+    name_len: usize,
+    buff: *mut u8,
+    len: usize,
+) -> u64 {
+    syscall(
+        GetAppMatchingName,
+        &[name as usize, name_len, buff as usize, len],
+    )
 }
 
 // returned ob die app mit diesem Namen gefunden wurde

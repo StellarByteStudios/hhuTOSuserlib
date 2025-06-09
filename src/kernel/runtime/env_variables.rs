@@ -1,9 +1,5 @@
-use alloc::{
-    string::{String, ToString},
-};
-use core::{
-    hash::{Hash, Hasher},
-};
+use alloc::string::{String, ToString};
+use core::hash::{Hash, Hasher};
 
 use hashbrown::HashSet;
 use spin::{Lazy, Mutex};
