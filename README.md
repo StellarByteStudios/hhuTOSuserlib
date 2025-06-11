@@ -8,6 +8,7 @@ Eine Library, welche eine gemeinsame Syscall-Schnittstelle für mehrere hhuTOS B
 - Syscall für ListRunning -> Direkt Print
 - Syscall für Musik
   - Noten Struct: Liste wird im Syscall übergeben
+- Apps entwickeln
 
 
 
