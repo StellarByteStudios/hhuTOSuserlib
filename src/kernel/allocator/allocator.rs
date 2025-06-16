@@ -18,12 +18,8 @@
    ╚═════════════════════════════════════════════════════════════════════════╝
 */
 use alloc::alloc::Layout;
-use core::ptr;
 
-use crate::{
-    gprintln,
-    kernel::{allocator::list::LinkedListAllocator, syscall::user_api::usr_mmap_heap_space},
-};
+use crate::kernel::{allocator::list::LinkedListAllocator, syscall::user_api::usr_mmap_heap_space};
 
 // defining the Allocator (which implements the 'GlobalAlloc' trait)
 #[cfg(feature = "global-alloc")] // Defaultfeature für Kernel deaktiviert -> allocator Dopplung

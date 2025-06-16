@@ -82,3 +82,10 @@ pub fn args_as_vec() -> Vec<String> {
     }
     vec
 }
+
+
+pub fn args_len() -> usize {
+    unsafe {
+        return *ARGC_PTR;
+    }
+}

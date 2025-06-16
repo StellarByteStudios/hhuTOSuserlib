@@ -1,6 +1,6 @@
 [package]
 name = "usrlib"
-version = "0.2.1"
+version = "0.2.3"
 edition = "2021"
 authors = [
     "Michael Schöttner <michael.schoettner@hhu.de>",
@@ -9,10 +9,12 @@ authors = [
 
 [dependencies]
 spin = "0.9.8"
+hashbrown = { version = "0.14"} # , default-features = false, features = ["rustc-dep-of-std"]
 
 
 [features]
-default = ["global-alloc", "lib-panic-handler", "runtime"] # Defaultfeatures standartmäßig gesetzt
+default = ["global-alloc", "lib-panic-handler", "runtime", "kprint"] # Defaultfeatures standartmäßig gesetzt
 global-alloc = []
 lib-panic-handler = []
 runtime = ["global-alloc"] # Runtime braucht den allocator zum funktionieren
+kprint = []
