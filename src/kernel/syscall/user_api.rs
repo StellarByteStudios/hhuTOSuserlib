@@ -164,36 +164,7 @@ pub fn usr_print_running_thread() {
 
 pub fn usr_play_song_with_notes(buff: *const u8, len: usize) {
     syscall(PlaySongOnNoteList, &[buff as usize, len]);
+}
 pub fn usr_list_app_names() {
-    syscall(ListAppNames, &[]);
-}
-
-// returned die Länge des names
-pub fn usr_get_app_matching_name(
-    name: *const u8,
-    name_len: usize,
-    buff: *mut u8,
-    len: usize,
-) -> u64 {
-    syscall(
-        GetAppMatchingName,
-        &[name as usize, name_len, buff as usize, len],
-    )
-}
-
-// returned ob die app mit diesem Namen gefunden wurde
-pub fn usr_start_app_with_name(name: *const u8, len: usize) -> u64 {
-    syscall(StartAppWithName, &[name as usize, len])
-}
-
-pub fn usr_thread_exit() {
-    syscall(ExitThread, &[]);
-}
-
-pub fn usr_process_exit() {
-    syscall(ExitProcess, &[]);
-}
-
-pub fn usr_kill_process(pid: usize) {
-    syscall(KillProcess, &[pid]);
+    syscall(PrintAppNames, &[]);
 }
