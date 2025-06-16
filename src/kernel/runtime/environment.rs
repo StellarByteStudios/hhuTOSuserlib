@@ -10,12 +10,11 @@ pub const USER_SPACE_ENV_START: usize = USER_SPACE_CODE_START + 0x4000_0000;
 pub const USER_SPACE_ARG_START: usize = USER_SPACE_ENV_START;
 
 pub(crate) const ARGC_PTR: *const usize = USER_SPACE_ARG_START as *const usize;
-pub(crate) const ARGV_PTR: *const *const u8 = (USER_SPACE_ARG_START + size_of::<*const usize>()) as *const *const u8;
-
-
+pub(crate) const ARGV_PTR: *const *const u8 =
+    (USER_SPACE_ARG_START + size_of::<*const usize>()) as *const *const u8;
 
 pub struct Args {
-    index: usize
+    index: usize,
 }
 
 // Gibt die Argumente als Iterator zurück
@@ -52,7 +51,11 @@ impl Iterator for Args {
             // Schaut nach ob man das nächste Argument zu nem String Casten kann
             // Falls ja, wird dieser Zurück gegeben im Iterator, sonst Fehler
             CStr::from_bytes_with_nul(slice_from_raw_parts(arg, len + 1).as_ref()?)
-                .map(|cstr| cstr.to_str().expect("Invalid UTF-8 in argument").to_string())
+                .map(|cstr| {
+                    cstr.to_str()
+                        .expect("Invalid UTF-8 in argument")
+                        .to_string()
+                })
                 .ok()
         }
     }

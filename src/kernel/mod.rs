@@ -1,3 +1,3 @@
 pub mod allocator;
-pub mod syscall;
 pub mod runtime;
+pub mod syscall;

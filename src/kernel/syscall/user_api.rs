@@ -14,7 +14,13 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
-use crate::kernel::syscall::SystemCall::{self, DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID, GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, KernelPrint, PanicPrint, ExitThread, ExitProcess, KillProcess, PrintAppNames, PrintRunningThreads, PlaySongOnNoteList};
+use crate::kernel::syscall::SystemCall::{
+    self, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread, GetCurrentProcessID,
+    GetCurrentProcessName, GetCurrentThreadID, GetLastKey, GetScreenWidth, GetSystime,
+    GraphicalPrint, GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, KernelPrint,
+    KillProcess, MMapHeapSpace, PaintPictureOnPos, PanicPrint, PlaySongOnNoteList, PrintAppNames,
+    PrintRunningThreads,
+};
 use core::arch::asm;
 
 // TODO: Generischer syscall mit variablen Parametern
@@ -90,9 +96,6 @@ pub fn usr_mmap_heap_space(pid: usize, size: usize) -> u64 {
     return syscall(MMapHeapSpace, &[pid, size]);
 }
 
-
-
-
 pub fn usr_thread_exit() {
     syscall(ExitThread, &[]);
 }
@@ -109,9 +112,6 @@ pub fn usr_dump_active_vmas() {
     syscall(DumpVMAsOfCurrentProcess, &[]);
 }
 
-
-
-
 /*
     Ganz viel Printing
 */
@@ -123,7 +123,6 @@ pub fn usr_graphical_print(buff: *const u8, len: usize) {
 pub fn usr_graphical_print_pos(x: usize, y: usize, buff: *const u8, len: usize) {
     syscall(GraphicalPrintWithPosition, &[x, y, buff as usize, len]);
 }
-
 
 pub fn usr_paint_picture_on_pos(
     x: usize,
@@ -143,18 +142,27 @@ pub fn usr_kernel_print(buff: *const u8, len: usize) {
     syscall(KernelPrint, &[buff as usize, len]);
 }
 
-pub fn usr_panic_print(file_ptr: *const u8, file_len: usize, line: usize, msg_ptr: *const u8, msg_len: usize) {
-    syscall(PanicPrint, &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len]);
+pub fn usr_panic_print(
+    file_ptr: *const u8,
+    file_len: usize,
+    line: usize,
+    msg_ptr: *const u8,
+    msg_len: usize,
+) {
+    syscall(
+        PanicPrint,
+        &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len],
+    );
 }
 
 pub fn usr_print_all_apps() {
     syscall(PrintAppNames, &[]);
 }
 
-pub fn usr_print_running_thread(){
+pub fn usr_print_running_thread() {
     syscall(PrintRunningThreads, &[]);
 }
 
-pub fn usr_play_song_with_notes(buff: *const u8, len: usize){
+pub fn usr_play_song_with_notes(buff: *const u8, len: usize) {
     syscall(PlaySongOnNoteList, &[buff as usize, len]);
 }

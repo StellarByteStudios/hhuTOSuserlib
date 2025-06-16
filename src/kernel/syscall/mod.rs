@@ -22,23 +22,30 @@ pub enum SystemCall {
     HelloWorld = 0,
     HelloWorldWithPrint,
     GetLastKey,
+
     GetCurrentThreadID,
     GetCurrentProcessID,
     GetCurrentProcessName,
+
     GetSystime,
     GetScreenWidth,
+
     MMapHeapSpace,
+
     ExitThread,
     ExitProcess,
     KillProcess,
+
     DumpVMAsOfCurrentProcess,
     GraphicalPrint,
     GraphicalPrintWithPosition,
     PaintPictureOnPos,
+
     KernelPrint,
     PanicPrint,
     PrintAppNames,
     PrintRunningThreads,
+
     PlaySongOnNoteList,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
