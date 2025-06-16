@@ -1,4 +1,4 @@
-use crate::kernel::syscall::user_api::usr_get_app_matching_name;
+/*use crate::kernel::syscall::user_api::usr_get_app_matching_name;
 use crate::kernel::syscall::user_api::usr_read_process_name;
 
 pub fn get_process_name(buffer: &mut [u8]) -> &str {
@@ -27,3 +27,4 @@ pub fn get_app_matching_name<'a>(
         Err(_) => "<invalid utf8>",
     }
 }
+*/
