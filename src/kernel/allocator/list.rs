@@ -13,6 +13,7 @@ use core::{mem, ptr};
 
 use super::allocator::{align_up, Locked};
 use crate::kernel::allocator::listnode::ListNode;
+use crate::{kprint, kprintln};
 
 /**
  Description: Metadata of the list allocator
@@ -68,7 +69,6 @@ impl LinkedListAllocator {
             );
             return;
         }
-
 
         // create a new ListNode (on stack)
         let mut node = ListNode::new(size);
