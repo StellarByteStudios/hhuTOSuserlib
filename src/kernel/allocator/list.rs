@@ -60,7 +60,7 @@ impl LinkedListAllocator {
         if addr < self.heap_start || addr + size > self.heap_end + 1 {
             kprint!("===! Fehlerhafter free im Usrlib Allocator! - ");
             kprintln!(
-                "Daten des Freed Block von alloc [{:#x}  /  {:#x}]\n Heap-Anfang {:#x}, Heap-Size: {:#x}, Heap-Ende: {:#x}",
+                "Heap: [{:#x}  /  {:#x}]: \n Angegebener Block: Start {:#x}, Größe: {:#x}, Block-Ende: {:#x}",
                 self.heap_start,
                 self.heap_end,
                 addr,

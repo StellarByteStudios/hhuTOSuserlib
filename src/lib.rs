@@ -11,6 +11,8 @@ pub mod utility;
 #[macro_use] // import macros, too
 pub mod graphix;
 
+pub mod music;
+
 fn main() {}
 
 // Kompiler Errors
