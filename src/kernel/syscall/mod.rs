@@ -42,7 +42,6 @@ pub enum SystemCall {
     PaintPictureOnPos,
 
     KernelPrint,
-    PanicPrint,
     PrintAppNames,
     PrintRunningThreads,
 
