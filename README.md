@@ -41,6 +41,17 @@ Aktuell läuft die Shell selbst im Kernel. Besser wäre das im Usermode als Anwe
 - Userlib gibt die Methoden `args()` und `args_as_vec()` um die Argumente als Iterator oder Vektor zu bekommen
 - Allocator wird jetzt auch in Runtime initialisiert
 
+### Musik
+- Es gibt nun neue Struct Note
+- Noten werden serialisiert für Syscall und dann komplett übergeben
+  - Wrapper nimmt einfach nur Vector an Noten
+- Noten werden dur Kernel wieder rückgewandelt und abgespielt
+- Frequenz = 0 -> delay, kein Ton
+
+
+
+
+--- 
 
 
 ### Kernel Code vorlagen
