@@ -18,7 +18,7 @@ use crate::kernel::syscall::SystemCall::{
     self, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread, GetCurrentProcessID,
     GetCurrentProcessName, GetCurrentThreadID, GetLastKey, GetScreenWidth, GetSystime,
     GraphicalPrint, GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, KernelPrint,
-    KillProcess, MMapHeapSpace, PaintPictureOnPos, PanicPrint, PlaySongOnNoteList, PrintAppNames,
+    KillProcess, MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, PrintAppNames,
     PrintRunningThreads,
 };
 use core::arch::asm;
@@ -139,19 +139,6 @@ pub fn usr_paint_picture_on_pos(
 
 pub fn usr_kernel_print(buff: *const u8, len: usize) {
     syscall(KernelPrint, &[buff as usize, len]);
-}
-
-pub fn usr_panic_print(
-    file_ptr: *const u8,
-    file_len: usize,
-    line: usize,
-    msg_ptr: *const u8,
-    msg_len: usize,
-) {
-    syscall(
-        PanicPrint,
-        &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len],
-    );
 }
 
 pub fn usr_print_all_apps() {
