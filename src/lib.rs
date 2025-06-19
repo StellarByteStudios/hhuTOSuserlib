@@ -12,6 +12,7 @@ pub mod utility;
 pub mod graphix;
 
 pub mod music;
+pub mod time;
 
 fn main() {}
 
