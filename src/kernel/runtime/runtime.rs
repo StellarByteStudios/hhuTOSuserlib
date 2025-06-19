@@ -1,6 +1,7 @@
 use crate::kernel::allocator::allocator::init;
+use crate::kernel::syscall::user_api::{usr_get_pid, usr_thread_exit, usr_process_exit};
 use crate::kernel::runtime::environment;
-use crate::kernel::syscall::user_api::{usr_get_pid, usr_process_exit, usr_thread_exit};
+use alloc::string::{String,ToString};
 use core::panic::PanicInfo;
 pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 
@@ -11,25 +12,30 @@ unsafe extern "C" {
 #[cfg(feature = "lib-panic-handler")] // Defaultfeature für Kernel deaktiviert -> panic Handler Dopplung
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    // location der panic herausfiltern
-    let (file_ptr, file_len, line) = if let Some(loc) = info.location() {
-        let file = loc.file();
-        (file.as_ptr(), file.len(), loc.line())
-    } else {
-        (core::ptr::null(), 0, 0)
-    };
+    let mut panic_message = String::from("Panic: ");
 
     // panic message herausfiltern
-    let (msg_ptr, msg_len) = if let Some(msg) = info.message().as_str() {
-        (msg.as_ptr(), msg.len())
+    if let Some(msg) = info.message().as_str() {
+        panic_message.push_str(msg);
     } else {
-        (core::ptr::null(), 0)
+        panic_message.push_str("no panic message");
     };
 
-    //usr_panic_print(file_ptr, file_len, line as usize, msg_ptr, msg_len);
+    // location der panic herausfiltern    
+    if let Some(loc) = info.location() {
+        panic_message.push_str(" at ");
+        panic_message.push_str(loc.file());
+        panic_message.push(':');
+        let line = loc.line();
+        panic_message.push_str(&line.to_string());
+    } else {
+        panic_message.push_str(" no location information");
+    }
+    
+    kprintln!("{}", panic_message);
 
     usr_thread_exit();
-    loop {}
+    loop { }    
 }
 
 // Entryfunktion die beim Starten der App angesprungen wird (Bereits Usermode)
