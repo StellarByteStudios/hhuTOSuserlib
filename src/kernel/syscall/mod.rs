@@ -47,6 +47,10 @@ pub enum SystemCall {
 
     PlaySongOnNoteList,
 
+    DrawPixel,
+    GetDateTime,
+    GetPitInterval
+
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
 }

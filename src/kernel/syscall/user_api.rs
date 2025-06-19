@@ -14,14 +14,15 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
-use crate::kernel::syscall::SystemCall::{
-    self, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread, GetCurrentProcessID,
-    GetCurrentProcessName, GetCurrentThreadID, GetLastKey, GetScreenWidth, GetSystime,
-    GraphicalPrint, GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, KernelPrint,
-    KillProcess, MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, PrintAppNames,
-    PrintRunningThreads,
+use crate::kernel::syscall::SystemCall::{self,
+    DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
+    GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
+    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, KernelPrint,
+    PrintAppNames, ExitThread, ExitProcess, KillProcess, DrawPixel, PrintRunningThreads,
+    GetDateTime, GetPitInterval,
 };
 use core::arch::asm;
+use crate::time::rtc_date_time::RtcDateTime;
 
 // Inspired by D3OS
 // Generischer Syscall. Kann für alle Argumentanzahlen verwendet werden, die unterstützt werden
@@ -137,6 +138,10 @@ pub fn usr_paint_picture_on_pos(
     );
 }
 
+pub fn usr_draw_pixel(x: usize, y: usize, color: usize) {
+    syscall(DrawPixel, &[x, y, color]);
+}
+
 pub fn usr_kernel_print(buff: *const u8, len: usize) {
     syscall(KernelPrint, &[buff as usize, len]);
 }
@@ -152,6 +157,12 @@ pub fn usr_print_running_thread() {
 pub fn usr_play_song_with_notes(buff: *const u8, len: usize) {
     syscall(PlaySongOnNoteList, &[buff as usize, len]);
 }
-pub fn usr_list_app_names() {
-    syscall(PrintAppNames, &[]);
+
+pub fn usr_get_datetime(datetime: *mut RtcDateTime) {
+    syscall(GetDateTime, &[datetime as usize]);
+}
+
+// get pid interval in ms
+pub fn usr_get_pid_interval() -> u64 {
+    syscall(GetPitInterval, &[])
 }
