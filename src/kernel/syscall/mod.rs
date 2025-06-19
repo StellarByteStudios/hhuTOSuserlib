@@ -49,7 +49,7 @@ pub enum SystemCall {
 
     DrawPixel,
     GetDateTime,
-    GetPitInterval
+    GetPitInterval,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
