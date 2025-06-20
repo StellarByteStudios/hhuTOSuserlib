@@ -14,15 +14,15 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
-use crate::kernel::syscall::SystemCall::{self,
-    DumpVMAsOfCurrentProcess, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
-    GetLastKey, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
-    HelloWorldWithPrint, MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, KernelPrint,
-    PrintAppNames, ExitThread, ExitProcess, KillProcess, DrawPixel, PrintRunningThreads,
-    GetDateTime, GetPitInterval,
+use crate::kernel::syscall::SystemCall::{
+    self, DrawPixel, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread, GetCurrentProcessID,
+    GetCurrentProcessName, GetCurrentThreadID, GetDateTime, GetLastKey, GetPitInterval,
+    GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
+    HelloWorldWithPrint, KernelPrint, KillProcess, MMapHeapSpace, PaintPictureOnPos,
+    PlaySongOnNoteList, PrintAppNames, PrintRunningThreads,
 };
-use core::arch::asm;
 use crate::time::rtc_date_time::RtcDateTime;
+use core::arch::asm;
 
 // Inspired by D3OS
 // Generischer Syscall. Kann für alle Argumentanzahlen verwendet werden, die unterstützt werden

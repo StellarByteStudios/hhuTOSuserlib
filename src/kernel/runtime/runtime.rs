@@ -1,7 +1,7 @@
 use crate::kernel::allocator::allocator::init;
-use crate::kernel::syscall::user_api::{usr_get_pid, usr_thread_exit, usr_process_exit};
 use crate::kernel::runtime::environment;
-use alloc::string::{String,ToString};
+use crate::kernel::syscall::user_api::{usr_get_pid, usr_process_exit, usr_thread_exit};
+use alloc::string::{String, ToString};
 use core::panic::PanicInfo;
 pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
 
@@ -21,7 +21,7 @@ fn panic(info: &PanicInfo) -> ! {
         panic_message.push_str("no panic message");
     };
 
-    // location der panic herausfiltern    
+    // location der panic herausfiltern
     if let Some(loc) = info.location() {
         panic_message.push_str(" at ");
         panic_message.push_str(loc.file());
@@ -31,11 +31,11 @@ fn panic(info: &PanicInfo) -> ! {
     } else {
         panic_message.push_str(" no location information");
     }
-    
+
     kprintln!("{}", panic_message);
 
     usr_thread_exit();
-    loop { }    
+    loop {}
 }
 
 // Entryfunktion die beim Starten der App angesprungen wird (Bereits Usermode)

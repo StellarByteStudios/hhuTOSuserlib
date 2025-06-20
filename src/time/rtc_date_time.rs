@@ -1,7 +1,7 @@
-use crate::kernel::syscall::user_api::{usr_get_systime, usr_get_datetime, usr_get_pid_interval};
-use core::convert::TryFrom;
-use alloc::string::String;
+use crate::kernel::syscall::user_api::{usr_get_datetime, usr_get_pid_interval, usr_get_systime};
 use alloc::format;
+use alloc::string::String;
+use core::convert::TryFrom;
 
 pub struct RtcDate {
     pub day: u8,
@@ -11,12 +11,7 @@ pub struct RtcDate {
 
 impl RtcDate {
     pub fn format(&self) -> String {
-        format!(
-            "{:02}.{:02}.{:02}",
-            self.day,
-            self.month,
-            self.year,
-        )
+        format!("{:02}.{:02}.{:02}", self.day, self.month, self.year,)
     }
 }
 
@@ -28,12 +23,7 @@ pub struct RtcTime {
 
 impl RtcTime {
     pub fn format(&self) -> String {
-        format!(
-            "{:02}:{:02}:{:02}",
-            self.hours,
-            self.minutes,
-            self.seconds,
-        )
+        format!("{:02}:{:02}:{:02}", self.hours, self.minutes, self.seconds,)
     }
 }
 
@@ -66,13 +56,21 @@ pub fn systime() -> RtcTime {
         seconds: u8::try_from(total_secs % 60).unwrap_or(0),
         minutes: u8::try_from((total_secs % 3600) / 60).unwrap_or(0),
         hours: u8::try_from(total_secs / 3600).unwrap_or(0),
-    } 
+    }
 }
 
 pub fn datetime() -> RtcDateTime {
-    let mut dt = RtcDateTime { 
-        date: RtcDate { day: 0, month: 0, year: 0 },
-        time: RtcTime { seconds: 0, minutes: 0, hours: 0 },
+    let mut dt = RtcDateTime {
+        date: RtcDate {
+            day: 0,
+            month: 0,
+            year: 0,
+        },
+        time: RtcTime {
+            seconds: 0,
+            minutes: 0,
+            hours: 0,
+        },
     };
     usr_get_datetime(&mut dt as *mut RtcDateTime);
     dt
