@@ -96,15 +96,15 @@ pub fn usr_mmap_heap_space(pid: usize, size: usize) -> u64 {
     return syscall(MMapHeapSpace, &[pid, size]);
 }
 
-pub fn usr_thread_exit() {
+pub(crate) fn usr_thread_exit() {
     syscall(ExitThread, &[]);
 }
 
-pub fn usr_process_exit() {
+pub(crate) fn usr_process_exit() {
     syscall(ExitProcess, &[]);
 }
 
-pub fn usr_kill_process(pid: usize) {
+pub(crate) fn usr_kill_process(pid: usize) {
     syscall(KillProcess, &[pid]);
 }
 
@@ -150,7 +150,7 @@ pub fn usr_print_all_apps() {
     syscall(PrintAppNames, &[]);
 }
 
-pub fn usr_print_running_thread() {
+pub(crate) fn usr_print_running_thread() {
     syscall(PrintRunningThreads, &[]);
 }
 

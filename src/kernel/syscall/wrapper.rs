@@ -1,3 +1,5 @@
+/*
+
 use crate::kernel::syscall::user_api::usr_read_process_name;
 use alloc::string::String;
 
@@ -10,3 +12,4 @@ pub fn get_process_name() -> String {
         Err(_) => String::from("<invalid utf8>"),
     }
 }
+*/

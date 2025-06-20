@@ -1,3 +1,4 @@
+pub mod process_management;
 pub mod user_api;
 pub mod wrapper;
 
