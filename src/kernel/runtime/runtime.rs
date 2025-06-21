@@ -1,6 +1,6 @@
 use crate::kernel::allocator::allocator::init;
 use crate::kernel::runtime::environment;
-use crate::kernel::syscall::user_api::{usr_get_pid, usr_process_exit, usr_thread_exit};
+use crate::kernel::syscall::user_api::{usr_get_pid, usr_process_exit};
 use alloc::string::{String, ToString};
 use core::panic::PanicInfo;
 pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
@@ -34,7 +34,7 @@ fn panic(info: &PanicInfo) -> ! {
 
     kprintln!("{}", panic_message);
 
-    usr_thread_exit();
+    usr_process_exit();
     loop {}
 }
 
