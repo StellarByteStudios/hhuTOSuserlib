@@ -1,6 +1,5 @@
 pub mod process_management;
 pub mod user_api;
-pub mod wrapper;
 
 // Enum with all known system calls
 // Inspired by D3OS
