@@ -4,13 +4,7 @@ use super::pictures::blinking::{blinking0, blinking1, blinking2, blinking3, blin
 use crate::{
     graphix::picturepainting::{
         paint::draw_picture,
-        pictures::{
-            charmander::{charmander0, charmander1, charmander2, charmander3, charmander4},
-            ghost::{
-                ghost00, ghost01, ghost02, ghost03, ghost04, ghost05, ghost06, ghost07, ghost08,
-                ghost09,
-            },
-        },
+        pictures::charmander::{charmander0, charmander1, charmander2, charmander3, charmander4},
     },
     utility::delay::delay,
 };
@@ -110,82 +104,6 @@ pub fn animate_charmander(x: u32, y: u32) {
             draw_picture(x as usize, y as usize, &frames[i]);
 
             delay(10);
-        }
-    }
-}
-
-pub fn animate_ghost(x: u32, y: u32) {
-    // Bilder laden
-    let frames: [Frame; 10] = [
-        Frame {
-            width: ghost00::WIDTH,
-            height: ghost00::HEIGHT,
-            bpp: ghost00::BPP,
-            data: ghost00::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost01::WIDTH,
-            height: ghost01::HEIGHT,
-            bpp: ghost01::BPP,
-            data: ghost01::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost02::WIDTH,
-            height: ghost02::HEIGHT,
-            bpp: ghost02::BPP,
-            data: ghost02::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost03::WIDTH,
-            height: ghost03::HEIGHT,
-            bpp: ghost03::BPP,
-            data: ghost03::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost04::WIDTH,
-            height: ghost04::HEIGHT,
-            bpp: ghost04::BPP,
-            data: ghost04::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost05::WIDTH,
-            height: ghost05::HEIGHT,
-            bpp: ghost05::BPP,
-            data: ghost05::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost06::WIDTH,
-            height: ghost06::HEIGHT,
-            bpp: ghost06::BPP,
-            data: ghost06::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost07::WIDTH,
-            height: ghost07::HEIGHT,
-            bpp: ghost07::BPP,
-            data: ghost07::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost08::WIDTH,
-            height: ghost08::HEIGHT,
-            bpp: ghost08::BPP,
-            data: ghost08::DATA.to_vec(),
-        },
-        Frame {
-            width: ghost09::WIDTH,
-            height: ghost09::HEIGHT,
-            bpp: ghost09::BPP,
-            data: ghost09::DATA.to_vec(),
-        },
-    ];
-
-    // Frames nacheinander zeichnen
-    gprintln!("animating Gillbert the Ghost");
-    loop {
-        for i in 0..frames.len() {
-            draw_picture(x as usize, y as usize, &frames[i]);
-
-            delay(5);
         }
     }
 }
