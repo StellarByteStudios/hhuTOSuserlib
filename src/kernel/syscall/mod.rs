@@ -1,6 +1,5 @@
 pub mod process_management;
 pub mod user_api;
-pub mod wrapper;
 
 // Enum with all known system calls
 // Inspired by D3OS
@@ -38,6 +37,9 @@ pub enum SystemCall {
     DrawPixel,
     GetDateTime,
     GetPitInterval,
+
+    ActivateShell,
+    DeactivateShell,
 
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
