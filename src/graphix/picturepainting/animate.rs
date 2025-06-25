@@ -16,10 +16,10 @@ use crate::{
 };
 
 pub struct Frame {
-    pub(crate) width: u32,
-    pub(crate) height: u32,
-    pub(crate) bpp: u32,
-    pub(crate) data: Vec<u8>,
+    pub width: u32,
+    pub height: u32,
+    pub bpp: u32,
+    pub data: Vec<u8>,
 }
 
 pub fn animate_blink(x: u32, y: u32) {

@@ -15,12 +15,13 @@
  *****************************************************************************/
 
 use crate::kernel::syscall::SystemCall::{
-    self, DeleteLastScreenChars, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread,
-    GetAppMatchingName, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID, GetLastKey,
+    self, DrawPixel, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread, GetCurrentProcessID,
+    GetCurrentProcessName, GetCurrentThreadID, GetDateTime, GetLastKey, GetPitInterval,
     GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld,
-    HelloWorldWithPrint, KernelPrint, KillProcess, ListAppNames, MMapHeapSpace, PaintPictureOnPos,
-    PanicPrint, PlaySong, StartAppWithName,
+    HelloWorldWithPrint, KernelPrint, KillProcess, MMapHeapSpace, PaintPictureOnPos,
+    PlaySongOnNoteList, PrintAppNames, PrintRunningThreads,
 };
+use crate::time::rtc_date_time::RtcDateTime;
 use core::arch::asm;
 
 // Inspired by D3OS
@@ -74,10 +75,46 @@ pub fn usr_getlastkey() -> u64 {
 pub fn usr_gettid() -> u64 {
     return syscall(GetCurrentThreadID, &[]);
 }
+pub fn usr_get_pid() -> u64 {
+    return syscall(GetCurrentProcessID, &[]);
+}
+// Returned die Länge des gelesenen Namens
+pub fn usr_read_process_name(buff: *mut u8, len: usize) -> u64 {
+    return syscall(GetCurrentProcessName, &[buff as usize, len]);
+}
 
 pub fn usr_get_systime() -> u64 {
     return syscall(GetSystime, &[]);
 }
+
+pub fn usr_get_screen_width() -> u64 {
+    return syscall(GetScreenWidth, &[]);
+}
+
+// Gibt die Startadresse des Heaps zurück
+pub fn usr_mmap_heap_space(pid: usize, size: usize) -> u64 {
+    return syscall(MMapHeapSpace, &[pid, size]);
+}
+
+pub(crate) fn usr_thread_exit() {
+    syscall(ExitThread, &[]);
+}
+
+pub(crate) fn usr_process_exit() {
+    syscall(ExitProcess, &[]);
+}
+
+pub(crate) fn usr_kill_process(pid: usize) {
+    syscall(KillProcess, &[pid]);
+}
+
+pub fn usr_dump_active_vmas() {
+    syscall(DumpVMAsOfCurrentProcess, &[]);
+}
+
+/*
+    Ganz viel Printing
+*/
 
 pub fn usr_graphical_print(buff: *const u8, len: usize) {
     syscall(GraphicalPrint, &[buff as usize, len]);
@@ -85,28 +122,6 @@ pub fn usr_graphical_print(buff: *const u8, len: usize) {
 
 pub fn usr_graphical_print_pos(x: usize, y: usize, buff: *const u8, len: usize) {
     syscall(GraphicalPrintWithPosition, &[x, y, buff as usize, len]);
-}
-
-pub fn usr_get_screen_width() -> u64 {
-    return syscall(GetScreenWidth, &[]);
-}
-
-pub fn usr_get_pid() -> u64 {
-    return syscall(GetCurrentProcessID, &[]);
-}
-
-// Returned die Länge des gelesenen Namens
-pub fn usr_read_process_name(buff: *mut u8, len: usize) -> u64 {
-    return syscall(GetCurrentProcessName, &[buff as usize, len]);
-}
-
-pub fn usr_dump_active_vmas() {
-    syscall(DumpVMAsOfCurrentProcess, &[]);
-}
-
-// Gibt die Startadresse des Heaps zurück
-pub fn usr_mmap_heap_space(pid: usize, size: usize) -> u64 {
-    return syscall(MMapHeapSpace, &[pid, size]);
 }
 
 pub fn usr_paint_picture_on_pos(
@@ -123,61 +138,31 @@ pub fn usr_paint_picture_on_pos(
     );
 }
 
-pub fn usr_play_song(song_id: usize) {
-    syscall(PlaySong, &[song_id]);
-}
-
-pub fn usr_delete_last_screen_chars(n: usize) {
-    syscall(DeleteLastScreenChars, &[n]);
+pub fn usr_draw_pixel(x: usize, y: usize, color: usize) {
+    syscall(DrawPixel, &[x, y, color]);
 }
 
 pub fn usr_kernel_print(buff: *const u8, len: usize) {
     syscall(KernelPrint, &[buff as usize, len]);
 }
 
-pub fn usr_panic_print(
-    file_ptr: *const u8,
-    file_len: usize,
-    line: usize,
-    msg_ptr: *const u8,
-    msg_len: usize,
-) {
-    syscall(
-        PanicPrint,
-        &[file_ptr as usize, file_len, line, msg_ptr as usize, msg_len],
-    );
+pub fn usr_print_all_apps() {
+    syscall(PrintAppNames, &[]);
 }
 
-pub fn usr_list_app_names() {
-    syscall(ListAppNames, &[]);
+pub(crate) fn usr_print_running_thread() {
+    syscall(PrintRunningThreads, &[]);
 }
 
-// returned die Länge des names
-pub fn usr_get_app_matching_name(
-    name: *const u8,
-    name_len: usize,
-    buff: *mut u8,
-    len: usize,
-) -> u64 {
-    syscall(
-        GetAppMatchingName,
-        &[name as usize, name_len, buff as usize, len],
-    )
+pub fn usr_play_song_with_notes(buff: *const u8, len: usize) {
+    syscall(PlaySongOnNoteList, &[buff as usize, len]);
 }
 
-// returned ob die app mit diesem Namen gefunden wurde
-pub fn usr_start_app_with_name(name: *const u8, len: usize) -> u64 {
-    syscall(StartAppWithName, &[name as usize, len])
+pub fn usr_get_datetime(datetime: *mut RtcDateTime) {
+    syscall(GetDateTime, &[datetime as usize]);
 }
 
-pub fn usr_thread_exit() {
-    syscall(ExitThread, &[]);
-}
-
-pub fn usr_process_exit() {
-    syscall(ExitProcess, &[]);
-}
-
-pub fn usr_kill_process(pid: usize) {
-    syscall(KillProcess, &[pid]);
+// get pid interval in ms
+pub fn usr_get_pid_interval() -> u64 {
+    syscall(GetPitInterval, &[])
 }
