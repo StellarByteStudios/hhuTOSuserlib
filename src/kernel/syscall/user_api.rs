@@ -14,7 +14,13 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
-use crate::kernel::syscall::SystemCall::{self, ActivateShell, DeactivateShell, DrawPixel, DumpVMAsOfCurrentProcess, ExitProcess, ExitThread, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID, GetDateTime, GetLastKey, GetPitInterval, GetScreenWidth, GetSystime, GraphicalPrint, GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, KernelPrint, KillProcess, MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, PrintAppNames, PrintRunningThreads};
+use crate::kernel::syscall::SystemCall::{
+    self, ActivateShell, DeactivateShell, DrawPixel, DumpVMAsOfCurrentProcess, ExitProcess,
+    ExitThread, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID, GetDateTime,
+    GetLastKey, GetPitInterval, GetScreenWidth, GetSystime, GraphicalPrint,
+    GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, KernelPrint, KillProcess,
+    MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, PrintAppNames, PrintRunningThreads,
+};
 use crate::time::rtc_date_time::RtcDateTime;
 use core::arch::asm;
 
@@ -160,7 +166,6 @@ pub fn usr_get_datetime(datetime: *mut RtcDateTime) {
 pub fn usr_get_pid_interval() -> u64 {
     syscall(GetPitInterval, &[])
 }
-
 
 // Shell an und aus schalten
 pub(crate) fn usr_activate_shell() {
