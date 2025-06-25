@@ -39,6 +39,9 @@ pub enum SystemCall {
     GetDateTime,
     GetPitInterval,
 
+    ActivateShell,
+    DeactivateShell,
+
     // kein Syscall. Speichert aber dadurch die Anzahl der Syscalls
     LastEntryMarker,
 }
