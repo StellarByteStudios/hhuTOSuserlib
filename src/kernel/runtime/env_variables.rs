@@ -1,4 +1,6 @@
+use alloc::format;
 use alloc::string::{String, ToString};
+use core::fmt::Debug;
 use core::hash::{Hash, Hasher};
 
 use hashbrown::HashSet;
@@ -61,4 +63,11 @@ pub fn env_get(name: &str) -> Option<String> {
         .get(&Variable::new(name, ""))
         .map(|var| var.content.clone());
     return env_var_option;
+}
+
+
+pub fn env_get_all() -> String {
+    let variables = ENVIRONMENT.lock();
+    let content: String = format!("{:?}", variables);
+    return content;
 }
