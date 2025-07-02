@@ -32,9 +32,9 @@ pub fn check_and_update_env_command(command: String) -> EnvPutStatus {
         .contains(ENVIRONMENT_PRINT_COMMAND)
     {
         // Ausgabe der Environment Variablen
-        gprintln!("Environmentvariablen: {:?}", env_get_all());
+        gprintln!("\nEnvironmentvariablen: {:}", env_get_all());
         #[cfg(feature = "kprint")] // Defaultfeature für Kernel deaktiviert -> Dopplung im Kernel
-        kprintln!("Environmentvariablen: {:?}", env_get_all());
+        kprintln!("Environmentvariablen: {:}", env_get_all());
         return Dumped;
     }
 
