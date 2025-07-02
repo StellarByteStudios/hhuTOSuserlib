@@ -81,7 +81,7 @@ pub fn env_get_all() -> String {
     // Durch alle Variablen durchgehen
     for var in variables.iter() {
 
-        content.push_str(format!("\t- {:}\n",var).as_str());
+        content.push_str(format!("    - {:}\n",var).as_str());
     }
     // Schönes Ende als Abschluss
     content.push_str("]");
