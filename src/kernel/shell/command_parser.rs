@@ -1,12 +1,14 @@
+use crate::gprintln;
+use crate::kernel::runtime::env_variables;
+use crate::kernel::runtime::env_variables::env_get_all;
+use crate::kernel::shell::command_parser::EnvPutStatus::Dumped;
+use crate::kernel::shell::{
+    command_parser::EnvPutStatus::{NotEnoughArguments, NotRightCommand},
+    ENVIRONMENT_COMMAND, ENVIRONMENT_PRINT_COMMAND,
+};
 use alloc::{
     string::{String, ToString},
     vec::Vec,
-};
-
-use crate::kernel::runtime::env_variables;
-use crate::kernel::shell::{
-    command_parser::EnvPutStatus::{NotEnoughArguments, NotRightCommand},
-    ENVIRONMENT_COMMAND,
 };
 
 pub enum EnvPutStatus {
@@ -14,12 +16,27 @@ pub enum EnvPutStatus {
     Updated,
     Inserted,
     Deleted,
+    Dumped,
     NotEnoughArguments,
     Error,
 }
 pub fn check_and_update_env_command(command: String) -> EnvPutStatus {
     //  Befehl aufspalten für ggf argumente
     let command_array: Vec<String> = command.split(" ").map(str::to_string).collect();
+
+    // Haben wir unseren dump befehl?
+    if command_array
+        .get(0)
+        .unwrap()
+        .clone()
+        .contains(ENVIRONMENT_PRINT_COMMAND)
+    {
+        // Ausgabe der Environment Variablen
+        gprintln!("\nEnvironmentvariablen: {:}", env_get_all());
+        #[cfg(feature = "kprint")] // Defaultfeature für Kernel deaktiviert -> Dopplung im Kernel
+        kprintln!("Environmentvariablen: {:}", env_get_all());
+        return Dumped;
+    }
 
     // Haben wir unseren put befehl?
     if !command_array
