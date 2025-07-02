@@ -1,12 +1,15 @@
+use crate::gprintln;
+use crate::kernel::runtime::env_variables;
+use crate::kernel::runtime::env_variables::env_get_all;
+use crate::kernel::shell::command_parser::EnvPutStatus::Dumped;
+use crate::kernel::shell::{
+    command_parser::EnvPutStatus::{NotEnoughArguments, NotRightCommand},
+    ENVIRONMENT_COMMAND, ENVIRONMENT_PRINT_COMMAND,
+};
 use alloc::{
     string::{String, ToString},
     vec::Vec,
 };
-use crate::gprintln;
-use crate::kernel::runtime::env_variables;
-use crate::kernel::runtime::env_variables::env_get_all;
-use crate::kernel::shell::{command_parser::EnvPutStatus::{NotEnoughArguments, NotRightCommand}, ENVIRONMENT_COMMAND, ENVIRONMENT_PRINT_COMMAND};
-use crate::kernel::shell::command_parser::EnvPutStatus::Dumped;
 
 pub enum EnvPutStatus {
     NotRightCommand,
@@ -30,10 +33,10 @@ pub fn check_and_update_env_command(command: String) -> EnvPutStatus {
     {
         // Ausgabe der Environment Variablen
         gprintln!("Environmentvariablen: {:?}", env_get_all());
+        #[cfg(feature = "kprint")] // Defaultfeature für Kernel deaktiviert -> Dopplung im Kernel
         kprintln!("Environmentvariablen: {:?}", env_get_all());
         return Dumped;
     }
-
 
     // Haben wir unseren put befehl?
     if !command_array
@@ -44,7 +47,6 @@ pub fn check_and_update_env_command(command: String) -> EnvPutStatus {
     {
         return NotRightCommand;
     }
-
 
     // Ist der Befehl vollständig?
     if command_array.len() < 3 {

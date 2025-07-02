@@ -1,5 +1,6 @@
 use alloc::format;
 use alloc::string::{String, ToString};
+use core::fmt;
 use core::fmt::Debug;
 use core::hash::{Hash, Hasher};
 
@@ -41,6 +42,12 @@ impl Variable {
     }
 }
 
+impl fmt::Display for Variable {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "\"{} : {}\"", self.name, self.content)
+    }
+}
+
 pub fn env_contains(name: &str) -> bool {
     let variables = ENVIRONMENT.lock();
     let contains = variables.contains(&Variable::new(name, ""));
@@ -65,9 +72,18 @@ pub fn env_get(name: &str) -> Option<String> {
     return env_var_option;
 }
 
-
 pub fn env_get_all() -> String {
     let variables = ENVIRONMENT.lock();
-    let content: String = format!("{:?}", variables);
+    // Leeren String erzeugen
+    let mut content: String = String::new();
+    // Anfangswert schreiben
+    content.push_str("[\n");
+    // Durch alle Variablen durchgehen
+    for var in variables.iter() {
+
+        content.push_str(format!("\t- {:}\n",var).as_str());
+    }
+    // Schönes Ende als Abschluss
+    content.push_str("]");
     return content;
 }
