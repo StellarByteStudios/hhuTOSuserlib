@@ -14,7 +14,7 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
-use crate::kernel::syscall::SystemCall::{
+use crate::kernel::syscall::systemcall::SystemCall::{
     self, ActivateShell, DeactivateShell, DrawPixel, DumpVMAsOfCurrentProcess, ExitProcess,
     ExitThread, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID, GetDateTime,
     GetLastKey, GetPitInterval, GetScreenWidth, GetSystime, GraphicalPrint,
