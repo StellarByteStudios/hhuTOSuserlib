@@ -63,6 +63,12 @@ impl Frame {
         return pos.get_x() >= self.width as i32 || pos.get_y() >= self.height as i32;
     }
 
+    pub fn fill_frame(&mut self, color: &Color) {
+        for i in 0..self.width * self.height -1 {
+            self.set_color_on_pixel_index(color, i as usize);
+        }
+    }
+
     pub fn set_color_on_position(&mut self, color: &Color, pos: &Position) {
         // Border Checken
         if self.check_frame_border(pos) {

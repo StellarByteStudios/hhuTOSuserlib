@@ -1,3 +1,4 @@
+use core::ops::{Add, Sub};
 use crate::gameengine::velocity::Velocity;
 
 #[derive(Clone, Copy, Debug)]
@@ -38,6 +39,28 @@ impl PartialEq for Position {
         }
 
         return true;
+    }
+}
+// * * Grundrechenarten * * //
+impl Add for Position {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Position {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+impl Sub for Position {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self {
+        Position {
+            x: self.x - other.x,
+            y: self.y - other.y,
+        }
     }
 }
 

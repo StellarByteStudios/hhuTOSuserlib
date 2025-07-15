@@ -6,6 +6,21 @@ pub struct Color {
     pub alpha: u8, // Wenn alpha < 127 dann ist die Farbe durchsichtig
 }
 
+impl Color {
+    pub fn new(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
+        return Color {
+            red,
+            green,
+            blue,
+            alpha,
+        };
+    }
+
+    pub fn is_transparent(&self) -> bool {
+        return self.alpha < 127;
+    }
+}
+
 // * * Einige Farb-Konstanten * * //
 pub const RED: Color = Color {
     red: 0xFF,
