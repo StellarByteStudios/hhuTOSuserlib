@@ -13,6 +13,7 @@ pub enum SystemCall {
 
     GetSystime,
     GetScreenWidth,
+    GetScreenHeight,
 
     MMapHeapSpace,
 
@@ -24,6 +25,7 @@ pub enum SystemCall {
     GraphicalPrint,
     GraphicalPrintWithPosition,
     PaintPictureOnPos,
+    ClearScreen,
 
     KernelPrint,
     PrintAppNames,
