@@ -1,3 +1,7 @@
+use rand::rngs::SmallRng;
+use rand::{Rng, SeedableRng};
+use crate::kernel::syscall::user_api::usr_get_systime;
+
 #[derive(Clone, Copy, Debug)]
 pub struct Color {
     pub red: u8,
@@ -18,6 +22,12 @@ impl Color {
 
     pub fn is_transparent(&self) -> bool {
         return self.alpha < 127;
+    }
+
+    pub fn random_color() -> Color {
+        let mut small_rng = SmallRng::seed_from_u64(usr_get_systime());
+        // Alle Farben zufällig aber mit hohem Alpha
+        Color::new(small_rng.gen(), small_rng.gen(), small_rng.gen(), 255)
     }
 }
 
