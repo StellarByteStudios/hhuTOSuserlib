@@ -1,6 +1,5 @@
-use alloc::vec::Vec;
-
 use super::pictures::blinking::{blinking0, blinking1, blinking2, blinking3, blinking4};
+use crate::graphix::picturepainting::pictures::frame::Frame;
 use crate::{
     graphix::picturepainting::{
         paint::draw_picture,
@@ -8,13 +7,6 @@ use crate::{
     },
     utility::delay::delay,
 };
-
-pub struct Frame {
-    pub width: u32,
-    pub height: u32,
-    pub bpp: u32,
-    pub data: Vec<u8>,
-}
 
 pub fn animate_blink(x: u32, y: u32) {
     // Bilder laden

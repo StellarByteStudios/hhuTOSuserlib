@@ -11,6 +11,7 @@ pub mod utility;
 #[macro_use] // import macros, too
 pub mod graphix;
 
+pub mod gameengine;
 pub mod music;
 pub mod time;
 
