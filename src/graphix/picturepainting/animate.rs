@@ -1,8 +1,8 @@
 use super::pictures::blinking::{blinking0, blinking1, blinking2, blinking3, blinking4};
-use crate::graphix::picturepainting::pictures::frame::Frame;
 use crate::{
     graphix::picturepainting::{
         paint::draw_picture,
+        pictures::frame::Frame,
         pictures::charmander::{charmander0, charmander1, charmander2, charmander3, charmander4},
     },
     utility::delay::delay,
