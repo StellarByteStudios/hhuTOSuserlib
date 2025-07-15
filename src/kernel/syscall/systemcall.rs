@@ -46,8 +46,6 @@ pub enum SystemCall {
 
 pub const NUM_SYSCALLS: usize = SystemCall::LastEntryMarker as usize;
 
-
-
 // Umwandlungsfunktion, welche einen Syscall aus einem usize erzeugt
 impl core::convert::TryFrom<usize> for SystemCall {
     type Error = ();

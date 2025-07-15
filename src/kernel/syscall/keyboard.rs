@@ -51,7 +51,6 @@ impl KeyEvent {
     }
 }
 
-
 pub fn get_new_key_event() -> KeyEvent {
     let key = usr_getlastkey();
     let keyevent = KeyEvent::from(key);
