@@ -1,9 +1,10 @@
-use crate::gameengine::color::{Color, TRANSPARENT};
+use crate::gameengine::color::{Color, MAGENTA, TRANSPARENT};
 use crate::gameengine::draw_functions;
 use crate::gameengine::position::Position;
 use crate::graphix::picturepainting::paint::draw_picture;
 use crate::graphix::picturepainting::pictures::frame::Frame;
 
+#[derive(Debug)]
 pub struct GameFrameLayer {
     field_size: (usize, usize),
     frame: Frame,
@@ -25,8 +26,23 @@ impl GameFrameLayer {
         return self.field_size;
     }
 
-    pub fn paint(&self, pos: Position) {
+    pub fn paint(&self, pos: &Position) {
         draw_picture(pos.get_x() as usize, pos.get_y() as usize, &self.frame)
+    }
+
+    pub fn paint_layers(game_frame_layers: &[GameFrameLayer], pos: &Position) {
+        // Gameframes zusammen mergen
+        let mut frame_buffer = Frame::new(game_frame_layers[0].field_size.0 as u32, game_frame_layers[0].field_size.1 as u32);
+
+        frame_buffer.fill_frame(&MAGENTA);
+
+        // Einzelne Layer zusammen packen
+        for game_frame_layer in game_frame_layers.iter() {
+            frame_buffer.copy_from_frame(&game_frame_layer.frame)
+        }
+
+        // Als Block ausgeben
+        frame_buffer.print_frame_on_pos(pos);
     }
 
     pub fn draw_sprite_on_position(&mut self, position: &Position, sprite: &Frame) -> bool {
