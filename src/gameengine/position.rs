@@ -1,5 +1,5 @@
-use core::ops::{Add, Sub};
 use crate::gameengine::velocity::Velocity;
+use core::ops::{Add, Sub};
 
 #[derive(Clone, Copy, Debug)]
 pub struct Position {
@@ -25,6 +25,9 @@ impl Position {
     }
     pub fn get_y(&self) -> i32 {
         self.y
+    }
+    pub fn raw(&self) -> (i32, i32) {
+        (self.x, self.y)
     }
 }
 
@@ -53,6 +56,17 @@ impl Add for Position {
     }
 }
 
+impl Add<Velocity> for Position {
+    type Output = Self;
+
+    fn add(self, other: Velocity) -> Self {
+        Position {
+            x: self.x + other.get_x() as i32,
+            y: self.y + other.get_y() as i32,
+        }
+    }
+}
+
 impl Sub for Position {
     type Output = Self;
 
@@ -66,6 +80,10 @@ impl Sub for Position {
 
 // * * Fancy Stuff * * //
 impl Position {
+    pub fn is_positive(&self) -> bool {
+        return self.x >= 0 && self.y >= 0;
+    }
+
     pub fn shift(&mut self, vel: Velocity) {
         self.x += vel.get_x() as i32;
         self.y += vel.get_y() as i32;

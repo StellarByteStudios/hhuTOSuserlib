@@ -85,6 +85,28 @@ impl Mul<f32> for Velocity {
     }
 }
 
+impl Mul<u32> for Velocity {
+    type Output = Self;
+
+    fn mul(self, multiplicand: u32) -> Self {
+        Velocity {
+            x: self.x * multiplicand as f32,
+            y: self.y * multiplicand as f32,
+        }
+    }
+}
+
+impl Mul<usize> for Velocity {
+    type Output = Self;
+
+    fn mul(self, multiplicand: usize) -> Self {
+        Velocity {
+            x: self.x * multiplicand as f32,
+            y: self.y * multiplicand as f32,
+        }
+    }
+}
+
 impl Div<f32> for Velocity {
     type Output = Velocity;
 
@@ -103,6 +125,23 @@ impl Velocity {
 
     pub fn dot(&self, other: Velocity) -> f32 {
         return sqrt(self.x * other.x + self.y * other.y);
+    }
+
+    pub fn is_zero(&self) -> bool {
+        self.x == 0.0 && self.y == 0.0
+    }
+
+    // Gibt eine normalisierte Version des Vektors zurück (Länge = 1)
+    pub fn normalize(self) -> Self {
+        let length = sqrt(self.x * self.x + self.y * self.y);
+        if length != 0.0 {
+            Velocity {
+                x: self.x / length,
+                y: self.y / length,
+            }
+        } else {
+            self // Länge 0 bleibt unverändert
+        }
     }
 }
 
