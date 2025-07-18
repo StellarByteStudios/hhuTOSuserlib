@@ -15,6 +15,10 @@ pub fn play_notes(notes: &[Note]) {
     drop(buffer);
 }
 
+pub fn play_note(note: Note) {
+    play_notes(&[note])
+}
+
 fn serialize_notes(notes: &[Note]) -> (*const u8, usize) {
     let len = notes.len() * size_of::<Note>();
     let mut buffer = Vec::with_capacity(len);
@@ -37,3 +41,4 @@ pub unsafe fn deserialize_notes(ptr: *const u8, len: usize) -> Vec<Note> {
     let slice = slice::from_raw_parts(ptr as *const Note, num_notes);
     slice.to_vec()
 }
+
