@@ -1,7 +1,9 @@
 use crate::gameengine::color::{Color, TRANSPARENT};
 use crate::gameengine::position::Position;
+use crate::graphix::picturepainting::paint::draw_picture;
 use alloc::vec;
 use alloc::vec::Vec;
+use core::fmt;
 
 pub struct Frame {
     pub width: u32,
@@ -64,9 +66,25 @@ impl Frame {
     }
 
     pub fn fill_frame(&mut self, color: &Color) {
-        for i in 0..self.width * self.height -1 {
+        for i in 0..self.width * self.height - 1 {
             self.set_color_on_pixel_index(color, i as usize);
         }
+    }
+
+    pub fn copy_from_frame(&mut self, frame: &Frame) {
+        for i in 0..self.width * self.height {
+            // Holt den Pixel aus dem anderen Frame
+            let color = frame.get_color_on_pixel_index(i as usize);
+
+            // Wenn die Farbe nicht transparent ist, wird sie kopiert
+            if !color.is_transparent(){
+                self.set_color_on_pixel_index(&color, i as usize);
+            }
+        }
+    }
+
+    pub fn print_frame_on_pos(&self, pos: &Position) {
+        draw_picture(pos.get_x() as usize, pos.get_y() as usize, self);
     }
 
     pub fn set_color_on_position(&mut self, color: &Color, pos: &Position) {
@@ -95,5 +113,16 @@ impl Frame {
 
         // Pixel holen
         return self.get_color_on_pixel_index(index);
+    }
+}
+
+impl fmt::Debug for Frame {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("Frame")
+            .field("width", &self.width)
+            .field("height", &self.height)
+            .field("bpp", &self.bpp)
+            .field("data", &format_args!("<{} bytes>", self.data.len()))
+            .finish()
     }
 }
