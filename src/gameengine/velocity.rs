@@ -1,6 +1,6 @@
-use crate::gameengine::directions::Direction;
-use crate::utility::mathadditions::math::sqrt;
 use core::ops::{Add, Div, Mul, Sub};
+
+use crate::{gameengine::directions::Direction, utility::mathadditions::math::sqrt};
 
 #[derive(Clone, Copy, Debug)]
 pub struct Velocity {

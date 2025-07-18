@@ -2,8 +2,10 @@ use super::pictures::blinking::{blinking0, blinking1, blinking2, blinking3, blin
 use crate::{
     graphix::picturepainting::{
         paint::draw_picture,
-        pictures::charmander::{charmander0, charmander1, charmander2, charmander3, charmander4},
-        pictures::frame::Frame,
+        pictures::{
+            charmander::{charmander0, charmander1, charmander2, charmander3, charmander4},
+            frame::Frame,
+        },
     },
     utility::delay::delay,
 };

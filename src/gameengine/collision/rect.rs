@@ -1,6 +1,9 @@
-use crate::gameengine::collision::collisiontrait::{BoundingBox, Collider};
-use crate::gameengine::position::Position;
 use core::any::Any;
+
+use crate::gameengine::{
+    collision::collisiontrait::{BoundingBox, Collider},
+    position::Position,
+};
 
 pub struct Rect {
     pos: Position,
@@ -10,7 +13,7 @@ pub struct Rect {
 
 impl Rect {
     pub fn new(pos: Position, width: usize, height: usize) -> Rect {
-        Rect{ pos, width, height }
+        Rect { pos, width, height }
     }
 }
 

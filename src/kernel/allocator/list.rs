@@ -12,8 +12,7 @@ use alloc::alloc::{GlobalAlloc, Layout};
 use core::{mem, ptr};
 
 use super::allocator::{align_up, Locked};
-use crate::kernel::allocator::listnode::ListNode;
-use crate::{kprint, kprintln};
+use crate::{kernel::allocator::listnode::ListNode, kprint, kprintln};
 
 /**
  Description: Metadata of the list allocator

@@ -1,7 +1,7 @@
-use crate::kernel::syscall::user_api::{usr_get_datetime, usr_get_pid_interval, usr_get_systime};
-use alloc::format;
-use alloc::string::String;
+use alloc::{format, string::String};
 use core::convert::TryFrom;
+
+use crate::kernel::syscall::user_api::{usr_get_datetime, usr_get_pid_interval, usr_get_systime};
 
 pub struct RtcDate {
     pub day: u8,

@@ -1,6 +1,9 @@
-use crate::gameengine::collision::collisiontrait::{BoundingBox, Collider};
-use crate::gameengine::position::Position;
 use core::any::Any;
+
+use crate::gameengine::{
+    collision::collisiontrait::{BoundingBox, Collider},
+    position::Position,
+};
 
 pub struct Circle {
     center: Position,

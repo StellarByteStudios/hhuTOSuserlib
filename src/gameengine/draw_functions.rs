@@ -1,6 +1,7 @@
-use crate::gameengine::color::Color;
-use crate::gameengine::position::Position;
-use crate::graphix::picturepainting::pictures::frame::Frame;
+use crate::{
+    gameengine::{color::Color, position::Position},
+    graphix::picturepainting::pictures::frame::Frame,
+};
 
 pub fn draw_circle(radius: u32, color: &Color, position: &Position, frame: &mut Frame) {
     let (cx, cy) = (position.get_x(), position.get_y());

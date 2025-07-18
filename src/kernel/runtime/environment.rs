@@ -1,7 +1,8 @@
-use alloc::string::{String, ToString};
-use alloc::vec::Vec;
-use core::ffi::CStr;
-use core::ptr::slice_from_raw_parts;
+use alloc::{
+    string::{String, ToString},
+    vec::Vec,
+};
+use core::{ffi::CStr, ptr::slice_from_raw_parts};
 
 // Konstanten für den Viruellen Adressraum
 pub const USER_SPACE_START: usize = 0x100_0000_0000; // 1TiB

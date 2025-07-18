@@ -1,5 +1,6 @@
-use crate::gameengine::velocity::Velocity;
 use core::ops::{Add, Sub};
+
+use crate::gameengine::velocity::Velocity;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Position {

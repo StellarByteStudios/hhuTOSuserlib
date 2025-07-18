@@ -1,8 +1,12 @@
-use alloc::format;
-use alloc::string::{String, ToString};
-use core::fmt;
-use core::fmt::Debug;
-use core::hash::{Hash, Hasher};
+use alloc::{
+    format,
+    string::{String, ToString},
+};
+use core::{
+    fmt,
+    fmt::Debug,
+    hash::{Hash, Hasher},
+};
 
 use hashbrown::HashSet;
 use spin::{Lazy, Mutex};

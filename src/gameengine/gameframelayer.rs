@@ -1,8 +1,11 @@
-use crate::gameengine::color::{Color, MAGENTA, TRANSPARENT};
-use crate::gameengine::draw_functions;
-use crate::gameengine::position::Position;
-use crate::graphix::picturepainting::paint::draw_picture;
-use crate::graphix::picturepainting::pictures::frame::Frame;
+use crate::{
+    gameengine::{
+        color::{Color, TRANSPARENT},
+        draw_functions,
+        position::Position,
+    },
+    graphix::picturepainting::{paint::draw_picture, pictures::frame::Frame},
+};
 
 #[derive(Debug)]
 pub struct GameFrameLayer {
@@ -32,9 +35,10 @@ impl GameFrameLayer {
 
     pub fn paint_layers(game_frame_layers: &[GameFrameLayer], pos: &Position) {
         // Gameframes zusammen mergen
-        let mut frame_buffer = Frame::new(game_frame_layers[0].field_size.0 as u32, game_frame_layers[0].field_size.1 as u32);
-
-        frame_buffer.fill_frame(&MAGENTA);
+        let mut frame_buffer = Frame::new(
+            game_frame_layers[0].field_size.0 as u32,
+            game_frame_layers[0].field_size.1 as u32,
+        );
 
         // Einzelne Layer zusammen packen
         for game_frame_layer in game_frame_layers.iter() {

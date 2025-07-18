@@ -1,9 +1,13 @@
-use crate::gameengine::color::{Color, TRANSPARENT};
-use crate::gameengine::position::Position;
-use crate::graphix::picturepainting::paint::draw_picture;
-use alloc::vec;
-use alloc::vec::Vec;
+use alloc::{vec, vec::Vec};
 use core::fmt;
+
+use crate::{
+    gameengine::{
+        color::{Color, TRANSPARENT},
+        position::Position,
+    },
+    graphix::picturepainting::paint::draw_picture,
+};
 
 pub struct Frame {
     pub width: u32,
@@ -77,7 +81,7 @@ impl Frame {
             let color = frame.get_color_on_pixel_index(i as usize);
 
             // Wenn die Farbe nicht transparent ist, wird sie kopiert
-            if !color.is_transparent(){
+            if !color.is_transparent() {
                 self.set_color_on_pixel_index(&color, i as usize);
             }
         }

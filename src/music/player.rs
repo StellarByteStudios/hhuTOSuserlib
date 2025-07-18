@@ -1,7 +1,7 @@
-use crate::kernel::syscall::user_api;
-use crate::music::note::Note;
 use alloc::vec::Vec;
 use core::{mem, slice};
+
+use crate::{kernel::syscall::user_api, music::note::Note};
 
 pub fn play_notes(notes: &[Note]) {
     // Noten erst für Syscall umwandeln
@@ -41,4 +41,3 @@ pub unsafe fn deserialize_notes(ptr: *const u8, len: usize) -> Vec<Note> {
     let slice = slice::from_raw_parts(ptr as *const Note, num_notes);
     slice.to_vec()
 }
-

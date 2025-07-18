@@ -1,6 +1,6 @@
+use rand::{rngs::SmallRng, Rng, SeedableRng};
+
 use crate::kernel::syscall::user_api::usr_get_systime;
-use rand::rngs::SmallRng;
-use rand::{Rng, SeedableRng};
 
 #[derive(Clone, Copy, Debug)]
 pub struct Color {

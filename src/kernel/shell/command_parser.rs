@@ -1,14 +1,17 @@
-use crate::gprintln;
-use crate::kernel::runtime::env_variables;
-use crate::kernel::runtime::env_variables::env_get_all;
-use crate::kernel::shell::command_parser::EnvPutStatus::Dumped;
-use crate::kernel::shell::{
-    command_parser::EnvPutStatus::{NotEnoughArguments, NotRightCommand},
-    ENVIRONMENT_COMMAND, ENVIRONMENT_PRINT_COMMAND,
-};
 use alloc::{
     string::{String, ToString},
     vec::Vec,
+};
+
+use crate::{
+    gprintln,
+    kernel::{
+        runtime::{env_variables, env_variables::env_get_all},
+        shell::{
+            command_parser::EnvPutStatus::{Dumped, NotEnoughArguments, NotRightCommand},
+            ENVIRONMENT_COMMAND, ENVIRONMENT_PRINT_COMMAND,
+        },
+    },
 };
 
 pub enum EnvPutStatus {

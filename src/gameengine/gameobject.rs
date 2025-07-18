@@ -1,14 +1,15 @@
-use crate::gameengine::collision::collisiontrait::Collider;
-use crate::gameengine::position::Position;
-use crate::gameengine::velocity::Velocity;
-use crate::graphix::picturepainting::pictures::frame::Frame;
-use alloc::boxed::Box;
-use alloc::string::String;
-use core::any::type_name;
-use core::fmt;
-use crate::gameengine::collision::circle::Circle;
-use crate::gameengine::collision::rect::Rect;
-use crate::gameengine::gameframelayer::GameFrameLayer;
+use alloc::{boxed::Box, string::String};
+use core::{any::type_name, fmt};
+
+use crate::{
+    gameengine::{
+        collision::{circle::Circle, collisiontrait::Collider, rect::Rect},
+        gameframelayer::GameFrameLayer,
+        position::Position,
+        velocity::Velocity,
+    },
+    graphix::picturepainting::pictures::frame::Frame,
+};
 
 pub struct GameObject {
     name: String,
@@ -63,7 +64,6 @@ impl GameObject {
         return None;
     }
 
-
     /* Bewegung */
     pub fn transform(&mut self, position_add: &Position) {
         self.position = self.position + position_add.clone();
@@ -89,7 +89,6 @@ impl GameObject {
         let dif = Position::new(self.velocity.get_x() as i32, self.velocity.get_y() as i32);
         self.collider.move_position(&dif);
     }
-
 
     /* Anzeige */
     pub fn print_on_game_layer(&self, layer: &mut GameFrameLayer) {
@@ -130,7 +129,6 @@ impl GameObject {
     }
 }
 
-
 impl fmt::Debug for GameObject {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("GameObject")
@@ -142,9 +140,6 @@ impl fmt::Debug for GameObject {
             .finish()
     }
 }
-
-
-
 
 // * * Gameobject Factory * * //
 pub struct GameObjectFactory {
@@ -190,15 +185,16 @@ impl GameObjectFactory {
     }
 
     pub fn set_circular_collider(mut self, radius: usize) -> Self {
-        let center = Position::new(self.object.position.get_x() + radius as i32,
-                                   self.object.position.get_y() + radius as i32);
+        let center = Position::new(
+            self.object.position.get_x() + radius as i32,
+            self.object.position.get_y() + radius as i32,
+        );
         self.object.collider = Box::new(Circle::new(center, radius));
         self
     }
 
-
     // Gibt das Gameobject ab und konsumiert die Factory
-    pub fn create(self) -> GameObject{
-        return self.object
+    pub fn create(self) -> GameObject {
+        return self.object;
     }
 }

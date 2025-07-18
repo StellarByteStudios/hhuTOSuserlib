@@ -1,5 +1,6 @@
-use crate::gameengine::position::Position;
 use core::any::Any;
+
+use crate::gameengine::position::Position;
 
 /// Einfache Rechteckstruktur zur Kollision
 #[derive(Debug)]
@@ -31,19 +32,22 @@ impl BoundingBox {
 
         // Scheiden sich die x Coordinatenlinien
         if self_right < other_left          // Self ist komplett links von other
-        || other_right < self_left {        // Self ist komplett rechts von other
+        || other_right < self_left
+        {
+            // Self ist komplett rechts von other
             return false; // X-Koordinaten sind komplett disjunkt
         }
 
         // Ab hier überschneiden sich die Boxen auf dem y-Intervall
         if self_bottom < other_top          // Self ist komplett über other
-        || other_bottom < self_top {       // Self ist komplett unter other
+        || other_bottom < self_top
+        {
+            // Self ist komplett unter other
             return false; // X-Coordinate scheidet zwar, aber Y-Koordinaten sind komplett disjunkt
         }
 
         // Hier schneiden sich sowohl die x-Intervalle als auch die y-Intervalle -> hit!
         return true;
-
     }
 }
 
@@ -55,7 +59,7 @@ pub trait Collider {
 
     fn get_position(&self) -> Position;
 
-    fn move_position(&mut self, direction: &Position){
+    fn move_position(&mut self, direction: &Position) {
         let current = self.get_position();
         self.set_position(&(current + *direction));
     }
