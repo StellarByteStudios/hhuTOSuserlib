@@ -1,3 +1,4 @@
+mod collision;
 pub mod color;
 pub mod directions;
 pub mod draw_functions;
