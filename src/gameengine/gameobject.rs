@@ -77,7 +77,7 @@ impl GameObject {
     pub fn set_new_pos(&mut self, new_position: &Position) {
         let dif = self.position - new_position.clone();
         self.position = new_position.clone();
-        self.collider.move_position(&dif);
+        self.collider.set_position(new_position);
     }
 
     pub fn set_new_velocity(&mut self, new_velocity: &Velocity) {
