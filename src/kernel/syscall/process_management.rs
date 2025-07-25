@@ -1,8 +1,9 @@
+use alloc::string::String;
+
 use crate::kernel::syscall::user_api::{
     usr_kill_process, usr_print_running_thread, usr_process_exit, usr_read_process_name,
     usr_thread_exit,
 };
-use alloc::string::String;
 
 pub fn get_process_name() -> String {
     let mut buffer = [0; 64];

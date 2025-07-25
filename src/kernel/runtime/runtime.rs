@@ -1,9 +1,12 @@
-use crate::kernel::allocator::allocator::init;
-use crate::kernel::runtime::environment;
-use crate::kernel::syscall::user_api::{usr_get_pid, usr_process_exit};
 use alloc::string::{String, ToString};
 use core::panic::PanicInfo;
-pub const HEAP_SIZE: usize = 1024 * 1024; // 1 MB heap size
+
+use crate::kernel::{
+    allocator::allocator::init,
+    runtime::environment,
+    syscall::user_api::{usr_get_pid, usr_process_exit},
+};
+pub const HEAP_SIZE: usize = 1024 * 1024 * 32; // 1 MB heap size
 
 unsafe extern "C" {
     fn main(argc: isize, argv: *const *const u8) -> isize;

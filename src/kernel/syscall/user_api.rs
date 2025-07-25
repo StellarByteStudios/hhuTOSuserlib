@@ -14,15 +14,19 @@
  *                  Michael Schoettner, 14.9.2023, modifiziert               *
  *****************************************************************************/
 
-use crate::kernel::syscall::SystemCall::{
-    self, ActivateShell, DeactivateShell, DrawPixel, DumpVMAsOfCurrentProcess, ExitProcess,
-    ExitThread, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID, GetDateTime,
-    GetLastKey, GetPitInterval, GetScreenWidth, GetSystime, GraphicalPrint,
-    GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, KernelPrint, KillProcess,
-    MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, PrintAppNames, PrintRunningThreads,
-};
-use crate::time::rtc_date_time::RtcDateTime;
 use core::arch::asm;
+
+use crate::{
+    kernel::syscall::systemcall::SystemCall::{
+        self, ActivateShell, ClearScreen, DeactivateShell, DrawPixel, DumpVMAsOfCurrentProcess,
+        ExitProcess, ExitThread, GetCurrentProcessID, GetCurrentProcessName, GetCurrentThreadID,
+        GetDateTime, GetLastKey, GetPitInterval, GetScreenHeight, GetScreenWidth, GetSystime,
+        GraphicalPrint, GraphicalPrintWithPosition, HelloWorld, HelloWorldWithPrint, KernelPrint,
+        KillProcess, MMapHeapSpace, PaintPictureOnPos, PlaySongOnNoteList, PrintAppNames,
+        PrintRunningThreads,
+    },
+    time::rtc_date_time::RtcDateTime,
+};
 
 // Inspired by D3OS
 // Generischer Syscall. Kann für alle Argumentanzahlen verwendet werden, die unterstützt werden
@@ -87,8 +91,11 @@ pub fn usr_get_systime() -> u64 {
     return syscall(GetSystime, &[]);
 }
 
-pub fn usr_get_screen_width() -> u64 {
+pub(crate) fn usr_get_screen_width() -> u64 {
     return syscall(GetScreenWidth, &[]);
+}
+pub(crate) fn usr_get_screen_height() -> u64 {
+    return syscall(GetScreenHeight, &[]);
 }
 
 // Gibt die Startadresse des Heaps zurück
@@ -136,6 +143,10 @@ pub fn usr_paint_picture_on_pos(
         PaintPictureOnPos,
         &[x, y, width, height, bbp, bitmapbuff as usize],
     );
+}
+
+pub(crate) fn usr_clear_screen(color_code: usize) {
+    syscall(ClearScreen, &[color_code]);
 }
 
 pub fn usr_draw_pixel(x: usize, y: usize, color: usize) {

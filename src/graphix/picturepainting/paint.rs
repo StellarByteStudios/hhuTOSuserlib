@@ -1,7 +1,9 @@
 // Verknüpfung auf den Syscall um ein Bild zu malen
 
-use crate::graphix::picturepainting::animate::Frame;
-use crate::kernel::syscall::user_api::usr_paint_picture_on_pos;
+use crate::{
+    graphix::picturepainting::pictures::frame::Frame,
+    kernel::syscall::user_api::usr_paint_picture_on_pos,
+};
 
 pub fn draw_picture(x: usize, y: usize, picture: &Frame) {
     usr_paint_picture_on_pos(

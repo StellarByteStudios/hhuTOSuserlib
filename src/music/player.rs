@@ -1,7 +1,7 @@
-use crate::kernel::syscall::user_api;
-use crate::music::note::Note;
 use alloc::vec::Vec;
 use core::{mem, slice};
+
+use crate::{kernel::syscall::user_api, music::note::Note};
 
 pub fn play_notes(notes: &[Note]) {
     // Noten erst für Syscall umwandeln
@@ -13,6 +13,10 @@ pub fn play_notes(notes: &[Note]) {
     // Speicher manuell rekonstruieren und freigeben:
     let buffer = unsafe { Vec::from_raw_parts(prepared_notes as *mut u8, len, len) };
     drop(buffer);
+}
+
+pub fn play_note(note: Note) {
+    play_notes(&[note])
 }
 
 fn serialize_notes(notes: &[Note]) -> (*const u8, usize) {
